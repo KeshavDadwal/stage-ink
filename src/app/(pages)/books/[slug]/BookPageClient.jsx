@@ -526,7 +526,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               </div>
             </div>
 
-            <section id="related-titles" className="container">
+            <section id="related-titles" className="container mx-auto px-4">
 
               {/* Heading */}
               <div className="flex items-center gap-2 justify-center pb-6 pt-6">
@@ -534,18 +534,19 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                 <h3 className="font-medium text-2xl text-center">
                   Upcoming Events
                 </h3>
+                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
               </div>
 
               <div className="flex flex-col items-center gap-6">
 
                 {/* Cards Row */}
-                <div className="flex flex-wrap justify-center gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
 
                   {/* Card */}
-                  <div className="flex bg-[#e9ddcf] w-[500px]">
+                  <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
 
-                    {/* Left Image */}
-                    <div className="w-[60%]">
+                    {/* Image */}
+                    <div className="w-full sm:w-[60%] h-48 sm:h-auto">
                       <img
                         src="/blogs.png"
                         alt="event"
@@ -553,8 +554,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                       />
                     </div>
 
-                    {/* Right Content */}
-                    <div className="w-[40%] p-4 flex flex-col justify-center">
+                    {/* Content */}
+                    <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
                       <h3 className="font-bold text-sm tracking-wide uppercase">
                         BOOK LAUNCH<br />GENOME TO OM
                       </h3>
@@ -568,12 +569,12 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                         LODHI ESTATE, NEW DELHI
                       </p>
                     </div>
-
                   </div>
 
-                  {/* Duplicate Card (example) */}
-                  <div className="flex bg-[#e9ddcf] w-[500px]">
-                    <div className="w-[60%]">
+                  {/* Duplicate Card */}
+                  <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
+
+                    <div className="w-full sm:w-[60%] h-48 sm:h-auto">
                       <img
                         src="/blogs.png"
                         alt="event"
@@ -581,7 +582,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                       />
                     </div>
 
-                    <div className="w-[40%] p-4 flex flex-col justify-center">
+                    <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
                       <h3 className="font-bold text-sm uppercase">
                         BOOK LAUNCH<br />GENOME TO OM
                       </h3>
@@ -609,198 +610,60 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
               </div>
             </section>
-
-
-            <section id="related-titles" className="container">
-
-              {/* Heading */}
-              <div className="flex items-center gap-2 justify-center pb-6 pt-6">
-                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                <h3 className="font-medium text-2xl text-center">
-                  Others Books By Rajiv Malhotra
-                </h3>
-                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-              </div>
-
-              {/* Cards Container */}
-              <div className="related_title_sec flex flex-wrap justify-center gap-4 pb-10">
-
-                {/* Card 1 */}
-                <div
-                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <div className="w-full min-h-[300px] flex flex-col h-full">
-
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex-1">
-                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                        Test
-                      </h6>
-
-                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                        testing 123
-                      </h4>
-
-                      <p className="text-gray-500">2001</p>
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* Card 2 */}
-                <div
-                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <div className="w-full min-h-[300px] flex flex-col h-full">
-
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex-1">
-                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                        Test
-                      </h6>
-
-                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                        testing 123
-                      </h4>
-
-                      <p className="text-gray-500">2001</p>
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* Card 3 */}
-                <div
-                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <div className="w-full min-h-[300px] flex flex-col h-full">
-
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex-1">
-                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                        Test
-                      </h6>
-
-                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                        testing 123
-                      </h4>
-
-                      <p className="text-gray-500">2001</p>
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* Card 4 */}
-                <div
-                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <div className="w-full min-h-[300px] flex flex-col h-full">
-
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="flex-1">
-                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                        Test
-                      </h6>
-
-                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                        testing 123
-                      </h4>
-
-                      <p className="text-gray-500">2001</p>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-            </section>
           </>
         )}
 
 
         {isSpecialBook ? (
+          <section id="related-titles" className="container mx-auto px-4">
 
-          <section id="related-titles" className="container">
+{/* Heading */}
+<div className="flex items-center gap-2 justify-center pb-6 pt-6">
+  <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+  <h3 className="font-medium text-base md:text-3xl text-center">
+    Related Titles
+  </h3>
+  <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+</div>
 
-            {/* Heading */}
-            <div className="flex items-center gap-2 justify-center pb-6 pt-6">
-              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-              <h3 className="font-medium text-2xl text-center">
-                Related Titles
-              </h3>
-              <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-            </div>
+{/* Cards */}
+<div className="flex flex-wrap justify-center mt-10">
 
-            {/* Cards */}
-            <div className="related_title_sec flex flex-wrap justify-center pb-10">
+  {[1, 2, 3, 4, 5, 6].map((_, index) => (
+    <div
+      key={index}
+      className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+    >
+      <div className="w-full min-h-[300px] flex flex-col h-full">
 
-              {[1, 2, 3, 4, 5, 6].map((_, index) => (
-                <div
-                  key={index}
-                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <div className="w-full min-h-[300px] flex flex-col h-full">
+        {/* Image */}
+        <div className="relative w-full h-[200px] lg:h-[300px]">
+          <img
+            src="/blogs.png"
+            alt="event"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+        {/* Content */}
+        <div className="flex-1">
+          <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
+            Test
+          </h6>
 
-                    <div className="flex-1">
-                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                        Test
-                      </h6>
+          <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
+            testing 123
+          </h4>
 
-                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                        testing 123
-                      </h4>
+          <p className="text-gray-500">2001</p>
+        </div>
 
-                      <p className="text-gray-500">2001</p>
-                    </div>
+      </div>
+    </div>
+  ))}
 
-                  </div>
-                </div>
-              ))}
-
-            </div>
-          </section>
+</div>
+</section>
 
         ) : (
 
@@ -844,51 +707,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
             </section>
           )
-
         )}
-
-        {/* {mounted && relatedBooks?.length > 0 && (
-          <section id="related-titles" className="container">
-            <div className="flex items-center gap-2 justify-center pb-6 pt-6">
-              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-              <i>
-                <h3 className="font-medium text-2xl md:text-2xl text-center">
-                  Related Titles
-                </h3>
-              </i>
-              <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-            </div>
-
-            <div className="flex items-center justify-center pb-6">
-              <Link href="/books">
-                <i>
-                  <h4 className="text-[#007DD7] text-base underline font-medium">
-                    View All Titles
-                  </h4>
-                </i>
-              </Link>
-            </div>
-
-            <div className="related_title_sec flex flex-wrap justify-center pb-10">
-              {relatedBooks.map((relatedBook) => (
-                <div
-                  key={relatedBook.id ?? relatedBook.slug ?? relatedBook.title}
-                  className="related_title_sec_card flex-1 p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                  style={{ maxWidth: "200px" }}
-                >
-                  <Link href={`/books/${relatedBook.slug}`} style={{ textDecoration: "none" }}>
-                    <BooksCards
-                      title={relatedBook.title}
-                      coverImage={relatedBook.thumbnailUrl}
-                      authorName={relatedBook.author?.name ?? ""}
-                      imageContainerClass="h-[200px] lg:h-[250px] border_card"
-                    />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </section>
-        )} */}
 
         {mounted && (
           <div className="hidden lg:block aside_fixed">

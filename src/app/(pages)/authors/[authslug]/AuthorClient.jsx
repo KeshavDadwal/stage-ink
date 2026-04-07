@@ -17,8 +17,14 @@ import {
 } from "react-icons/fa";
 
 const defaultImage = "/author-defaultimages.png";
+export default function AuthorClient({ authorInfo, hasSpotlights }) {
+  const isSpecialAuthor1 =
+    authorInfo?.author_name?.trim() ===
+    "Iqbal Chand Malhotra";
 
-export default function AuthorClient({ authorInfo,hasSpotlights }) {
+  const isSpecialAuthor2 =
+    authorInfo?.author_name?.trim() ===
+    "Subroto Chattopadhyay";
   const [isExpanded, setIsExpanded] = useState(false);
 
   const descriptionText = authorInfo.authorDescription || "";
@@ -112,7 +118,109 @@ export default function AuthorClient({ authorInfo,hasSpotlights }) {
             </ul>
           </div>
         </div>
+        {isSpecialAuthor1 && (
+          <section id="related-titles" className="container mx-auto px-4">
 
+          {/* Heading */}
+          <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+            <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+            <h3 className="font-medium text-base md:text-3xl text-center">
+              Others Books By {authorInfo.author_name}
+            </h3>
+            <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+          </div>
+
+          {/* Cards Container */}
+          <div className="flex flex-wrap justify-center mt-10">
+
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+              >
+                <div className="w-full min-h-[300px] flex flex-col h-full">
+
+                  {/* Image */}
+                  <div className="relative w-full h-[200px] lg:h-[300px]">
+                    <img
+                      src="/blogs.png"
+                      alt="event"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
+                      Test
+                    </h6>
+
+                    <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
+                      testing 123fsdfasd
+                    </h4>
+
+                    <p className="text-gray-500">2001</p>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+
+          </div>
+        </section>
+        )}
+
+        {isSpecialAuthor2 && (
+           <section id="related-titles" className="container mx-auto px-4">
+
+           {/* Heading */}
+           <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+             <h3 className="font-medium text-base md:text-3xl text-center">
+               Others Books By {authorInfo.author_name}
+             </h3>
+             <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+           </div>
+ 
+           {/* Cards Container */}
+           <div className="flex flex-wrap justify-center mt-10">
+ 
+             {[1, 2, 3, 4].map((_, i) => (
+               <div
+                 key={i}
+                 className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+               >
+                 <div className="w-full min-h-[300px] flex flex-col h-full">
+ 
+                   {/* Image */}
+                   <div className="relative w-full h-[200px] lg:h-[300px]">
+                     <img
+                       src="/blogs.png"
+                       alt="event"
+                       className="w-full h-full object-cover"
+                     />
+                   </div>
+ 
+                   {/* Content */}
+                   <div className="flex-1">
+                     <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
+                       Test
+                     </h6>
+ 
+                     <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
+                       testing 123
+                     </h4>
+ 
+                     <p className="text-gray-500">2001</p>
+                   </div>
+ 
+                 </div>
+               </div>
+             ))}
+ 
+           </div>
+         </section>
+        )}
         <div className="books-section w-full pt-20">
           <div className="flex items-center gap-2 justify-center pb-6 pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
@@ -154,7 +262,7 @@ export default function AuthorClient({ authorInfo,hasSpotlights }) {
                 </div>
               ))
             ) : (
-              
+
               <p>No related books found for this author.</p>
             )}
           </div>
