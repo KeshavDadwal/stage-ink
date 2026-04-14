@@ -6,6 +6,7 @@ const ScriptLoader = () => {
     useEffect(() => {
         // Array of script URLs
         const scripts = [
+            "https://code.jquery.com/jquery-3.6.0.min.js",
             "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
             "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js",
             "https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
@@ -26,7 +27,7 @@ const ScriptLoader = () => {
         // Load all scripts
         Promise.all(scripts.map(loadScript))
             .then(() => {
-                console.log('All scripts loaded successfully');
+                // console.log('All scripts loaded successfully');
                 // Initialize your carousel or any other functionality here
             })
             .catch((error) => {

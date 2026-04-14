@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { RiArrowRightSLine } from "react-icons/ri";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import inkdouble1 from "@/app/assests/image/inkdouble1.svg";
 import inkdouble2 from "@/app/assests/image/inkdouble2.svg";
 import CurveTop from "@/app/assests/image/aboutauthorbg.png";
@@ -29,9 +29,22 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   );
   const [selectedImage, setSelectedImage] = useState(null);
   const [showButtons, setShowButtons] = useState(false);
+  const [mediaStartIndex, setMediaStartIndex] = useState(0);
+  const [activeMediaModal, setActiveMediaModal] = useState(null);
+  const [mediaItemsPerView, setMediaItemsPerView] = useState(1);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const update = () => {
+      // Tailwind `md` breakpoint is 768px
+      setMediaItemsPerView(window.innerWidth >= 768 ? 3 : 1);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   useEffect(() => {
@@ -86,6 +99,97 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   const isSpecialBook =
     bookInfo?.title?.trim() ===
     "Bangladesh: Humiliation, Carnage, Liberation, Chaos";
+  const socialMediaItems = [
+    {
+      platform: "Instagram",
+      image:"Image1.png",
+      watchUrl:
+        "https://www.instagram.com/reel/DSpjK7WgWv9/?utm_source=ig_web_copy_link",
+      embedUrl: "https://www.instagram.com/reel/DSpjK7WgWv9/embed",
+    },
+    {
+      platform: "Instagram",
+      image:"Image2.png",
+      watchUrl:
+        "https://www.instagram.com/reel/DVbdYlmgaR7/?utm_source=ig_web_copy_link",
+      embedUrl: "https://www.instagram.com/reel/DVbdYlmgaR7/embed",
+    },
+    {
+      platform: "Instagram",
+      image:"Image3.png",
+      watchUrl:
+        "https://www.instagram.com/reel/DWUGbT4gT2k/?utm_source=ig_web_copy_link",
+      embedUrl: "https://www.instagram.com/reel/DWUGbT4gT2k/embed",
+    },
+    {
+      platform: "Instagram",
+      image:"Image1.png",
+      watchUrl:
+        "https://www.instagram.com/reel/DSFbINBgQPz/?utm_source=ig_web_copy_link",
+      embedUrl: "https://www.instagram.com/reel/DSFbINBgQPz/embed",
+    },
+    {
+      platform: "YouTube",
+      watchUrl: "https://youtu.be/iv_wI-9Rn2I?si=tC7gwTHOrI8fDhFY",
+      embedUrl: "https://www.youtube.com/embed/iv_wI-9Rn2I",
+    },
+  ];
+  const visibleMediaItems = Array.from({ length: mediaItemsPerView }, (_, i) => {
+    const idx = (mediaStartIndex + i) % socialMediaItems.length;
+    return socialMediaItems[idx];
+  });
+
+  const handlePrevMedia = () => {
+    setMediaStartIndex((prev) =>
+      prev === 0 ? socialMediaItems.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextMedia = () => {
+    setMediaStartIndex((prev) => (prev + 1) % socialMediaItems.length);
+  };
+
+  useEffect(() => {
+    const autoSlideTimer = setInterval(() => {
+      setMediaStartIndex((prev) => (prev + 1) % socialMediaItems.length);
+    }, 3500);
+
+    return () => clearInterval(autoSlideTimer);
+  }, [socialMediaItems.length]);
+
+  useEffect(() => {
+    if (!activeMediaModal) return undefined;
+    const onKey = (e) => {
+      if (e.key === "Escape") setActiveMediaModal(null);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [activeMediaModal]);
+
+  const getMediaThumbnailUrl = (item) => {
+    if (item?.thumbnailUrl) return item.thumbnailUrl;
+    const staticName = item?.image != null ? String(item.image).trim() : "";
+    if (staticName) {
+      const path = staticName.startsWith("/") ? staticName : `/${staticName}`;
+      return path;
+    }
+    if (item?.platform === "YouTube") {
+      const match = item.embedUrl?.match(/embed\/([^?&]+)/);
+      if (match) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+    }
+    return null;
+  };
+
+  const embedUrlWithAutoplay = (embedUrl) => {
+    if (!embedUrl) return embedUrl;
+    const sep = embedUrl.includes("?") ? "&" : "?";
+    return `${embedUrl}${sep}autoplay=1`;
+  };
 
   return (
     <>
@@ -602,7 +706,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
                 {/* View All Link */}
                 <a
-                  href="#"
+                  href="/resources/events"
                   className="text-[#007DD7] italic text-sm hover:underline mt-4"
                 >
                   View All Upcoming Events
@@ -610,14 +714,131 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
               </div>
             </section>
+
+            <section className="container mx-auto px-4 pb-12">
+              <div className="flex items-center gap-2 justify-center pb-6 pt-2">
+                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+                <h3 className="font-medium text-2xl text-center">
+                  Watch on Instagram & YouTube
+                </h3>
+                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+              </div>
+
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={handlePrevMedia}
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97] md:h-10 md:w-10 md:text-lg"
+                  aria-label="Show previous media"
+                >
+                  <RiArrowLeftSLine className="h-6 w-6 md:h-5 md:w-5" aria-hidden />
+                </button>
+
+                <div className="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {visibleMediaItems.map((item, index) => {
+                    const thumb = getMediaThumbnailUrl(item);
+                    return (
+                      <div
+                        key={`${item.platform}-${item.embedUrl}-${index}`}
+                        className="bg-white rounded-xl shadow-md p-3"
+                      >
+                        
+                        <button
+                          type="button"
+                          onClick={() => setActiveMediaModal(item)}
+                          className="group relative w-full aspect-[9/16] rounded-lg overflow-hidden border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007DD7] focus-visible:ring-offset-2"
+                          aria-label={`Play ${item.title}`}
+                        >
+                          {thumb ? (
+                            <img
+                              src={thumb}
+                              alt=""
+                              className="absolute inset-0 h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className={`absolute inset-0 flex items-center justify-center ${
+                                item.platform === "YouTube"
+                                  ? "bg-gradient-to-br from-red-100 to-gray-100"
+                                  : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
+                              }`}
+                            >
+                              {item.platform === "YouTube" ? (
+                                <FaYoutube className="text-6xl text-red-600" aria-hidden />
+                              ) : (
+                                <FaInstagram className="text-6xl text-pink-600" aria-hidden />
+                              )}
+                            </div>
+                          )}
+                          <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition group-hover:bg-black/40">
+                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-[#007DD7] shadow-md text-xl">
+                              ▶
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleNextMedia}
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97] md:h-10 md:w-10 md:text-lg"
+                  aria-label="Show next media"
+                >
+                  <RiArrowRightSLine className="h-6 w-6 md:h-5 md:w-5" aria-hidden />
+                </button>
+              </div>
+
+              {activeMediaModal && (
+                <div
+                  className="fixed inset-0 z-[300] flex items-center justify-center bg-black/75 p-4"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="media-modal-title"
+                  onClick={() => setActiveMediaModal(null)}
+                >
+                  <div
+                    className="flex w-full max-w-md flex-col overflow-hidden rounded-xl bg-black shadow-2xl"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-center gap-2 border-b border-white/10 px-3 py-2">
+                      <p
+                        id="media-modal-title"
+                        className="min-w-0 flex-1 truncate text-sm font-medium text-white"
+                      >
+                        {activeMediaModal.title}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setActiveMediaModal(null)}
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white text-2xl leading-none hover:bg-white/15"
+                        aria-label="Close video"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="aspect-[9/16] w-full max-h-[min(85vh,720px)]">
+                      <iframe
+                        key={activeMediaModal.embedUrl}
+                        src={embedUrlWithAutoplay(activeMediaModal.embedUrl)}
+                        title={activeMediaModal.title}
+                        className="h-full w-full"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </section>
           </>
         )}
 
 
-        {isSpecialBook ? (
-          <section id="related-titles" className="container mx-auto px-4">
-
-          {/* Heading */}
+      
+          {/* <section id="related-titles" className="container mx-auto px-4">          
           <div className="flex items-center gap-2 justify-center pb-6 pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
             <h3 className="font-medium text-base md:text-3xl text-center">
@@ -626,7 +847,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
             <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
           </div>
         
-          {/* Cards */}
+          
           <div className="flex flex-wrap justify-center mt-10">
         
             {[1, 2, 3, 4, 5, 6].map((_, index) => (
@@ -636,7 +857,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               >
                 <div className="w-full min-h-[300px] flex flex-col h-full">
         
-                  {/* Image */}
+                  
                   <div className="relative w-full h-[200px] lg:h-[300px]">
                     <img
                       src="/blogs.png"
@@ -645,7 +866,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     />
                   </div>
         
-                  {/* Content */}
+                  
                   <div className="flex-1">
                     <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
                       Test
@@ -663,11 +884,10 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
             ))}
         
           </div>
-        </section>
+        </section> */}
 
-        ) : (
 
-          mounted && relatedBooks?.length > 0 && (
+          {mounted && relatedBooks?.length > 0 && (
             <section id="related-titles" className="container">
 
               <div className="flex items-center gap-2 justify-center pb-6 pt-6">
@@ -706,8 +926,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               </div>
 
             </section>
-          )
-        )}
+          )}
 
         {mounted && (
           <div className="hidden lg:block aside_fixed">
