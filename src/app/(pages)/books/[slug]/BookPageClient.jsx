@@ -32,7 +32,6 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   const [mediaStartIndex, setMediaStartIndex] = useState(0);
   const [activeMediaModal, setActiveMediaModal] = useState(null);
   const [mediaModalNonce, setMediaModalNonce] = useState(0);
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -637,7 +636,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     </div>
 
                     <a
-                      href="/Bangladesh_for website.pdf"
+                      href="/bangladesh-sample-chapter.pdf"
                       download
                       className="inline-block mt-3 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
                     >
@@ -694,7 +693,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     {/* Content */}
                     <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
                       <h3 className="font-bold text-sm tracking-wide uppercase">
-                      Bangladesh: Humiliation, Carnage, Liberation, Chaos
+                        Bangladesh: Humiliation, Carnage, Liberation, Chaos
                       </h3>
 
                       <p className="text-xs mt-3">
@@ -722,6 +721,22 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
               </div>
             </section>
+
+            {bookInfo.pressCoverage && (<section className="container mx-auto px-4 mt-8">
+              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
+                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+                <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
+                  Press Coverage
+                </h3>
+                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+              </div>
+
+              <div
+                className="max-w-3xl mx-auto text-[14px] sm:text-[16px] text-[#0D1928] [&_a]:block [&_a]:mt-8 [&_a]:text-blue-600 [&_a]:underline"
+                dangerouslySetInnerHTML={{ __html: bookInfo.pressCoverage }}
+              />
+            </section>
+            )}
 
             <section className="container mx-auto px-4 pb-12 mt-10">
               <div className="flex items-center gap-2 justify-center pb-6 pt-0">
@@ -765,8 +780,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                           ) : (
                             <div
                               className={`absolute inset-0 flex items-center justify-center ${item.platform === "YouTube"
-                                  ? "bg-gradient-to-br from-red-100 to-gray-100"
-                                  : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
+                                ? "bg-gradient-to-br from-red-100 to-gray-100"
+                                : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
                                 }`}
                             >
                               {item.platform === "YouTube" ? (
@@ -820,8 +835,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                         ) : (
                           <div
                             className={`absolute inset-0 flex items-center justify-center ${item.platform === "YouTube"
-                                ? "bg-gradient-to-br from-red-100 to-gray-100"
-                                : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
+                              ? "bg-gradient-to-br from-red-100 to-gray-100"
+                              : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
                               }`}
                           >
                             {item.platform === "YouTube" ? (

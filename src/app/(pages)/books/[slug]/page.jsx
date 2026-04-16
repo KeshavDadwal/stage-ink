@@ -44,7 +44,6 @@ export default async function Page({ params }) {
 
   const bookData = await fetchBookBySlug(cleanSlug);
   if (!bookData) redirect("/books");
-
   const expectedSlug = `${cleanSlug}-${bookData.isbn13}`;
   if (decodedSlug !== expectedSlug) redirect(`/books/${expectedSlug}`);
 
@@ -61,6 +60,7 @@ export default async function Page({ params }) {
           ? JSON.parse(author.socialMedia)
           : author.socialMedia
         : {},
+      pressCoverage: bookData.pressCoverage || "",  
     }));
 
   const categoryNames = [bookData.category, ...(bookData.additionalCategories || [])]

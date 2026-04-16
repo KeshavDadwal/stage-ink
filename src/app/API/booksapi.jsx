@@ -11,7 +11,7 @@ const API_BASE_URL = `${getPortalBaseUrl()}/api/public`;
  */
 export async function fetchAllBooks() {
   try {
-    const response = await fetch(`${API_BASE_URL}/books`);
+    const response = await fetch(`${API_BASE_URL}/books`, { cache: 'no-store' });
     
     if (!response.ok) {
       throw new Error(`Failed to fetch books: ${response.status} ${response.statusText}`);
@@ -32,12 +32,10 @@ export async function fetchAllBooks() {
  */
 export async function fetchBookBySlug(slug) {
   try {
-    const response = await fetch(`${API_BASE_URL}/books/${slug}`);
-    
+    const response = await fetch(`${API_BASE_URL}/books/${slug}`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to fetch book: ${response.status} ${response.statusText}`);
     }
-    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -69,7 +67,7 @@ export function processBookData(book) {
   try {
     if (book.author?.socialMedia && typeof book.author.socialMedia === 'string') {
       authorSocial = JSON.parse(book.author.socialMedia);
-    } else if (typeof book.author?.socialMedia === 'object') {
+    } else if (book.author?.socialMedia && typeof book.author.socialMedia === 'object') {
       authorSocial = book.author.socialMedia;
     }
   } catch (e) {
@@ -142,7 +140,7 @@ export function processBookData(book) {
         .replace(/\s+/g, ' ') // Normalize whitespace
         .replace(/\\\\"/g, '\\"') // Fix double escaped quotes
         .trim(); // Remove any extra whitespace
-    } else if (typeof book.pressCoverage === 'object') {
+    } else if (book.pressCoverage && typeof book.pressCoverage === 'object') {
       pressCoverage = book.pressCoverage;
     }
   } catch (e) {
