@@ -31,20 +31,10 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   const [showButtons, setShowButtons] = useState(false);
   const [mediaStartIndex, setMediaStartIndex] = useState(0);
   const [activeMediaModal, setActiveMediaModal] = useState(null);
-  const [mediaItemsPerView, setMediaItemsPerView] = useState(1);
+  const [mediaModalNonce, setMediaModalNonce] = useState(0);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      // Tailwind `md` breakpoint is 768px
-      setMediaItemsPerView(window.innerWidth >= 768 ? 3 : 1);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
   }, []);
 
   useEffect(() => {
@@ -134,10 +124,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
       embedUrl: "https://www.youtube.com/embed/iv_wI-9Rn2I",
     },
   ];
-  const visibleMediaItems = Array.from({ length: mediaItemsPerView }, (_, i) => {
-    const idx = (mediaStartIndex + i) % socialMediaItems.length;
-    return socialMediaItems[idx];
-  });
+  const visibleMediaItems = [socialMediaItems[mediaStartIndex]];
+  const desktopMediaItems = socialMediaItems.slice(0, 5);
 
   const handlePrevMedia = () => {
     setMediaStartIndex((prev) =>
@@ -147,6 +135,12 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
   const handleNextMedia = () => {
     setMediaStartIndex((prev) => (prev + 1) % socialMediaItems.length);
+  };
+
+  const openMediaModal = (item) => {
+    setActiveMediaModal(item);
+    // Force iframe remount so autoplay is retriggered even for same video.
+    setMediaModalNonce((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -185,10 +179,18 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
     return null;
   };
 
-  const embedUrlWithAutoplay = (embedUrl) => {
+  const embedUrlWithAutoplay = (item) => {
+    const embedUrl = item?.embedUrl;
     if (!embedUrl) return embedUrl;
     const sep = embedUrl.includes("?") ? "&" : "?";
-    return `${embedUrl}${sep}autoplay=1`;
+
+    // YouTube autoplay is usually blocked unless muted.
+    if (item?.platform === "YouTube") {
+      return `${embedUrl}${sep}autoplay=1&mute=1&playsinline=1&rel=0`;
+    }
+
+    // Instagram embeds do not reliably support forced autoplay.
+    return embedUrl;
   };
 
   return (
@@ -724,17 +726,17 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                 <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="md:hidden flex items-center gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={handlePrevMedia}
-                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97] md:h-10 md:w-10 md:text-lg"
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97]"
                   aria-label="Show previous media"
                 >
-                  <RiArrowLeftSLine className="h-6 w-6 md:h-5 md:w-5" aria-hidden />
+                  <RiArrowLeftSLine className="h-6 w-6" aria-hidden />
                 </button>
 
-                <div className="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="min-w-0 flex-1 grid grid-cols-1 gap-4">
                   {visibleMediaItems.map((item, index) => {
                     const thumb = getMediaThumbnailUrl(item);
                     return (
@@ -742,10 +744,9 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                         key={`${item.platform}-${item.embedUrl}-${index}`}
                         className="bg-white rounded-xl shadow-md p-3"
                       >
-                        
                         <button
                           type="button"
-                          onClick={() => setActiveMediaModal(item)}
+                          onClick={() => openMediaModal(item)}
                           className="group relative w-full aspect-[9/16] rounded-lg overflow-hidden border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007DD7] focus-visible:ring-offset-2"
                           aria-label={`Play ${item.title}`}
                         >
@@ -784,11 +785,57 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                 <button
                   type="button"
                   onClick={handleNextMedia}
-                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97] md:h-10 md:w-10 md:text-lg"
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#007DD7] bg-white text-xl text-[#007DD7] shadow-sm transition hover:bg-[#007DD7] hover:text-white hover:shadow active:scale-[0.97]"
                   aria-label="Show next media"
                 >
-                  <RiArrowRightSLine className="h-6 w-6 md:h-5 md:w-5" aria-hidden />
+                  <RiArrowRightSLine className="h-6 w-6" aria-hidden />
                 </button>
+              </div>
+
+              <div className="hidden md:grid md:grid-cols-5 gap-4">
+                {desktopMediaItems.map((item, index) => {
+                  const thumb = getMediaThumbnailUrl(item);
+                  return (
+                    <div
+                      key={`${item.platform}-${item.embedUrl}-${index}`}
+                      className="bg-white rounded-xl shadow-md p-3"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => openMediaModal(item)}
+                        className="group relative w-full aspect-[9/16] rounded-lg overflow-hidden border border-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007DD7] focus-visible:ring-offset-2"
+                        aria-label={`Play ${item.title}`}
+                      >
+                        {thumb ? (
+                          <img
+                            src={thumb}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div
+                            className={`absolute inset-0 flex items-center justify-center ${
+                              item.platform === "YouTube"
+                                ? "bg-gradient-to-br from-red-100 to-gray-100"
+                                : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
+                            }`}
+                          >
+                            {item.platform === "YouTube" ? (
+                              <FaYoutube className="text-6xl text-red-600" aria-hidden />
+                            ) : (
+                              <FaInstagram className="text-6xl text-pink-600" aria-hidden />
+                            )}
+                          </div>
+                        )}
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition group-hover:bg-black/40">
+                          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-[#007DD7] shadow-md text-xl">
+                            ▶
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
 
               {activeMediaModal && (
@@ -821,8 +868,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     </div>
                     <div className="aspect-[9/16] w-full max-h-[min(85vh,720px)]">
                       <iframe
-                        key={activeMediaModal.embedUrl}
-                        src={embedUrlWithAutoplay(activeMediaModal.embedUrl)}
+                        key={`${activeMediaModal.embedUrl}-${mediaModalNonce}`}
+                        src={embedUrlWithAutoplay(activeMediaModal)}
                         title={activeMediaModal.title}
                         className="h-full w-full"
                         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
