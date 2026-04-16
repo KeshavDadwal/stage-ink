@@ -12,11 +12,12 @@ import {
   FaInstagram,
   FaSnapchat
 } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
+import { MdContentCopy, MdEmail } from 'react-icons/md';
 
 export default function SharePopup() {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState('');
+  const [copied, setCopied] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
@@ -38,6 +39,16 @@ export default function SharePopup() {
 
   const baseClass =
     "w-12 h-12 flex items-center justify-center rounded-full text-white text-lg shadow-lg hover:scale-110 transition duration-200";
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+    }
+  };
 
   return (
     <div className="relative" ref={ref}>
@@ -70,10 +81,7 @@ export default function SharePopup() {
 
             {/* Instagram */}
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(url);
-                window.open('https://www.instagram.com/', '_blank');
-              }}
+              onClick={() => window.open('https://www.instagram.com/', '_blank')}
               className={`${baseClass} bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600`}
             >
               <FaInstagram />
@@ -123,7 +131,24 @@ export default function SharePopup() {
               <FaTelegramPlane />
             </a>
 
+            {/* Copy Link */}
+            <button
+              onClick={copyToClipboard}
+              className={`${baseClass} ${copied ? 'bg-emerald-600' : 'bg-gray-700'}`}
+              title={copied ? 'Copied!' : 'Copy link'}
+            >
+              <MdContentCopy />
+            </button>
+
           </div>
+          <button
+            onClick={copyToClipboard}
+            className={`mt-4 w-full rounded-lg px-3 py-2 text-sm font-medium transition ${
+              copied ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+            }`}
+          >
+            {copied ? 'Copied!' : 'Copy Link'}
+          </button>
         </div>
       )}
     </div>

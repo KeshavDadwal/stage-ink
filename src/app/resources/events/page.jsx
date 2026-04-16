@@ -37,6 +37,7 @@ export default function Page() {
           eventtiming: event.eventTime,
           eventlocation: "",
           eventstate: "",
+          content: event.content,
         }));
         setEvents(mappedEvents);
         setLoading(false);
@@ -138,8 +139,8 @@ export default function Page() {
                           index === 0
                             ? "/upevent1top.png"
                             : index === 1
-                            ? "/upeventsectop.png"
-                            : "/upthirdtop.png"
+                              ? "/upeventsectop.png"
+                              : "/upthirdtop.png"
                         }
                         alt={`Title for Event ${index + 1}`}
                         className="w-full"
@@ -165,19 +166,39 @@ export default function Page() {
                               </div>
                             </div>
                             <div className="lg:w-[40%] pt-4 lg:pt-0 flex items-center">
-                              <div>
-                                <h3 className="text-[20px] uppercase leading-6 font-barlow font-medium">
-                                  {event.title}
-                                </h3>
-                                <p className="text-[18px] text-[#0D1928] leading-6 mt-4 font-normal font-barlow">
-                                  {event.eventdate}
-                                </p>
-                                <p className="text-[18px] text-[#0D1928] leading-6 font-normal font-barlow">
-                                  {event.eventtiming}
-                                </p>
-                                <p className="text-[18px] text-[#0D1928] leading-6 font-normal font-barlow">
-                                  {event.eventlocation},{' '}{event.eventstate}
-                                </p>
+                              <div className="w-full max-w-full overflow-hidden">
+
+                                {event.title && (
+                                  <h3 className="text-[18px] sm:text-[20px] uppercase leading-6 font-barlow font-medium break-words">
+                                    {event.title}
+                                  </h3>
+                                )}
+
+                                {event.eventdate && (
+                                  <p className="text-[16px] sm:text-[18px] text-[#0D1928] leading-6 mt-4 font-normal font-barlow break-words">
+                                    {event.eventdate}
+                                  </p>
+                                )}
+
+                                {event.eventtiming && (
+                                  <p className="text-[16px] sm:text-[18px] text-[#0D1928] leading-6 font-normal font-barlow break-words">
+                                    {event.eventtiming}
+                                  </p>
+                                )}
+
+                                {(event.eventlocation || event.eventstate) && (
+                                  <p className="text-[16px] sm:text-[18px] text-[#0D1928] leading-6 font-normal font-barlow break-words">
+                                    {[event.eventlocation, event.eventstate].filter(Boolean).join(", ")}
+                                  </p>
+                                )}
+
+                                {event.content && (
+                                  <div
+                                    className="text-[14px] sm:text-[16px] text-[#0D1928] leading-relaxed font-normal font-barlow mt-2 break-words"
+                                    dangerouslySetInnerHTML={{ __html: event.content }}
+                                  />
+                                )}
+
                               </div>
                             </div>
                           </div>
@@ -189,8 +210,8 @@ export default function Page() {
                           index === 0
                             ? "/upevent1bottom.png"
                             : index === 1
-                            ? "/upeventsecbottom.png"
-                            : "/upthirdbottom.png"
+                              ? "/upeventsecbottom.png"
+                              : "/upthirdbottom.png"
                         }
                         alt={`Title for Event ${index + 1}`}
                         className="w-full mb-2"
@@ -224,11 +245,10 @@ export default function Page() {
               </div>
 
               <div
-                className={`pt-6 ${
-                  currentPastEvents.length > 0
-                    ? "grid grid-cols-2 lg:grid-cols-3 gap-4"
-                    : "flex justify-center items-center h-64"
-                }`}
+                className={`pt-6 ${currentPastEvents.length > 0
+                  ? "grid grid-cols-2 lg:grid-cols-3 gap-4"
+                  : "flex justify-center items-center h-64"
+                  }`}
               >
                 {currentPastEvents.length > 0 ? (
                   currentPastEvents.map((event) => (
@@ -286,11 +306,10 @@ export default function Page() {
                           setCurrentPage(i + 1);
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
-                        className={`p-1 px-2.5 py-0 text-lg font-medium text-[#8A8A8A] font-barlow rounded-full w-[30px] h-[30px] ${
-                          currentPage === i + 1
-                            ? "bg-[#8A8A8A66] text-black"
-                            : "bg-white hover:bg-[#241b6d] hover:text-white font-normal"
-                        }`}
+                        className={`p-1 px-2.5 py-0 text-lg font-medium text-[#8A8A8A] font-barlow rounded-full w-[30px] h-[30px] ${currentPage === i + 1
+                          ? "bg-[#8A8A8A66] text-black"
+                          : "bg-white hover:bg-[#241b6d] hover:text-white font-normal"
+                          }`}
                       >
                         {i + 1}
                       </button>

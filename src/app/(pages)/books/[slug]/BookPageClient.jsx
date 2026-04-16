@@ -92,28 +92,28 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   const socialMediaItems = [
     {
       platform: "Instagram",
-      image:"Image1.png",
+      image: "Image1.png",
       watchUrl:
         "https://www.instagram.com/reel/DSpjK7WgWv9/?utm_source=ig_web_copy_link",
       embedUrl: "https://www.instagram.com/reel/DSpjK7WgWv9/embed",
     },
     {
       platform: "Instagram",
-      image:"Image2.png",
+      image: "Image2.png",
       watchUrl:
         "https://www.instagram.com/reel/DVbdYlmgaR7/?utm_source=ig_web_copy_link",
       embedUrl: "https://www.instagram.com/reel/DVbdYlmgaR7/embed",
     },
     {
       platform: "Instagram",
-      image:"Image3.png",
+      image: "Image3.png",
       watchUrl:
         "https://www.instagram.com/reel/DWUGbT4gT2k/?utm_source=ig_web_copy_link",
       embedUrl: "https://www.instagram.com/reel/DWUGbT4gT2k/embed",
     },
     {
       platform: "Instagram",
-      image:"Image1.png",
+      image: "Image1.png",
       watchUrl:
         "https://www.instagram.com/reel/DSFbINBgQPz/?utm_source=ig_web_copy_link",
       embedUrl: "https://www.instagram.com/reel/DSFbINBgQPz/embed",
@@ -626,7 +626,24 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
                   {/* RIGHT COLUMN */}
                   <div className="w-full lg:w-[35%] p-4 text-center">
-                    <Image src={Catalog} alt="Catalog" className="mb-3 mx-auto" />
+
+                    <div className="relative w-full h-64 sm:h-80 lg:h-96">
+                      <Image
+                        src="https://bluone-ink.s3.us-east-1.amazonaws.com/books/thumbnails/7480d688-fd8c-4220-b501-83627f53a8eb.jpg"
+                        alt="Catalog"
+                        fill
+                        className="mb-3 mx-auto object-contain"
+                      />
+                    </div>
+
+                    <a
+                      href="/Bangladesh_for website.pdf"
+                      download
+                      className="inline-block mt-3 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+                    >
+                      Download Sample Chapter (PDF)
+                    </a>
+
                   </div>
                 </div>
               </div>
@@ -635,27 +652,41 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
             <section id="related-titles" className="container mx-auto px-4">
 
               {/* Heading */}
-              <div className="flex items-center gap-2 justify-center pb-6 pt-6">
-                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                <h3 className="font-medium text-2xl text-center">
+              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
+                <Image
+                  src={inkdouble1}
+                  width={55}
+                  height={55}
+                  alt="inkdouble1"
+                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
+                />
+                <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
                   Upcoming Events
                 </h3>
-                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+                <Image
+                  src={inkdouble2}
+                  width={55}
+                  height={55}
+                  alt="inkdouble2"
+                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
+                />
               </div>
 
               <div className="flex flex-col items-center gap-6">
 
                 {/* Cards Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+                <div className="w-full md:w-1/2 mx-auto">
 
                   {/* Card */}
                   <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
 
                     {/* Image */}
                     <div className="w-full sm:w-[60%] h-48 sm:h-auto">
-                      <img
-                        src="/blogs.png"
+                      <Image
+                        src="https://bluone-ink.s3.us-east-1.amazonaws.com/events/banners/2e002f21-0598-4df7-846d-1d5be83bf4d1.jpeg"
                         alt="event"
+                        width={800}
+                        height={500}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -667,39 +698,12 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                       </h3>
 
                       <p className="text-xs mt-3">
-                        SEPTEMBER 8,<br />
-                        1700 - 1900 HOURS
+                        25 April 2026<br />
+                        1700 HOURS
                       </p>
 
                       <p className="text-xs mt-2">
-                        LODHI ESTATE, NEW DELHI
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Duplicate Card */}
-                  <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
-
-                    <div className="w-full sm:w-[60%] h-48 sm:h-auto">
-                      <img
-                        src="/blogs.png"
-                        alt="event"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
-                      <h3 className="font-bold text-sm uppercase">
-                        BOOK LAUNCH<br />GENOME TO OM
-                      </h3>
-
-                      <p className="text-xs mt-3">
-                        SEPTEMBER 8,<br />
-                        1700 - 1900 HOURS
-                      </p>
-
-                      <p className="text-xs mt-2">
-                        LODHI ESTATE, NEW DELHI
+                        Sushant Lok Phase I, Sector 43, Gurugram, Haryana
                       </p>
                     </div>
                   </div>
@@ -707,18 +711,20 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                 </div>
 
                 {/* View All Link */}
-                <a
-                  href="/resources/events"
-                  className="text-[#007DD7] italic text-sm hover:underline mt-4"
-                >
-                  View All Upcoming Events
-                </a>
+                <div className="flex items-center justify-center pb-6">
+                  <a
+                    href="/resources/events"
+                    className="text-[#007DD7] italic text-sm hover:underline"
+                  >
+                    View All Upcoming Events
+                  </a>
+                </div>
 
               </div>
             </section>
 
             <section className="container mx-auto px-4 pb-12">
-              <div className="flex items-center gap-2 justify-center pb-6 pt-2">
+              <div className="flex items-center gap-2 justify-center pb-6 pt-0">
                 <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
                 <h3 className="font-medium text-2xl text-center">
                   Watch on Instagram & YouTube
@@ -758,11 +764,10 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                             />
                           ) : (
                             <div
-                              className={`absolute inset-0 flex items-center justify-center ${
-                                item.platform === "YouTube"
+                              className={`absolute inset-0 flex items-center justify-center ${item.platform === "YouTube"
                                   ? "bg-gradient-to-br from-red-100 to-gray-100"
                                   : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
-                              }`}
+                                }`}
                             >
                               {item.platform === "YouTube" ? (
                                 <FaYoutube className="text-6xl text-red-600" aria-hidden />
@@ -814,11 +819,10 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                           />
                         ) : (
                           <div
-                            className={`absolute inset-0 flex items-center justify-center ${
-                              item.platform === "YouTube"
+                            className={`absolute inset-0 flex items-center justify-center ${item.platform === "YouTube"
                                 ? "bg-gradient-to-br from-red-100 to-gray-100"
                                 : "bg-gradient-to-br from-purple-100 via-pink-50 to-amber-50"
-                            }`}
+                              }`}
                           >
                             {item.platform === "YouTube" ? (
                               <FaYoutube className="text-6xl text-red-600" aria-hidden />
@@ -884,8 +888,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
         )}
 
 
-      
-          {/* <section id="related-titles" className="container mx-auto px-4">          
+
+        {/* <section id="related-titles" className="container mx-auto px-4">          
           <div className="flex items-center gap-2 justify-center pb-6 pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
             <h3 className="font-medium text-base md:text-3xl text-center">
@@ -934,46 +938,46 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
         </section> */}
 
 
-          {mounted && relatedBooks?.length > 0 && (
-            <section id="related-titles" className="container">
+        {mounted && relatedBooks?.length > 0 && (
+          <section id="related-titles" className="container">
 
-              <div className="flex items-center gap-2 justify-center pb-6 pt-6">
-                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                <h3 className="font-medium text-2xl text-center">
-                  Related Titles
-                </h3>
-                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-              </div>
+            <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+              <h3 className="font-medium text-2xl text-center">
+                Related Titles
+              </h3>
+              <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+            </div>
 
-              <div className="flex items-center justify-center pb-6">
-                <Link href="/books">
-                  <h4 className="text-[#007DD7] text-base underline font-medium">
-                    View All Titles
-                  </h4>
-                </Link>
-              </div>
+            <div className="flex items-center justify-center pb-6">
+              <Link href="/books">
+                <h4 className="text-[#007DD7] text-base underline font-medium">
+                  View All Titles
+                </h4>
+              </Link>
+            </div>
 
-              <div className="related_title_sec flex flex-wrap justify-center pb-10">
-                {relatedBooks.map((relatedBook) => (
-                  <div
-                    key={relatedBook.id ?? relatedBook.slug ?? relatedBook.title}
-                    className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
-                    style={{ maxWidth: "200px" }}
-                  >
-                    <Link href={`/books/${relatedBook.slug}`}>
-                      <BooksCards
-                        title={relatedBook.title}
-                        coverImage={relatedBook.thumbnailUrl}
-                        authorName={relatedBook.author?.name ?? ""}
-                        imageContainerClass="h-[200px] lg:h-[250px] border_card"
-                      />
-                    </Link>
-                  </div>
-                ))}
-              </div>
+            <div className="related_title_sec flex flex-wrap justify-center pb-10">
+              {relatedBooks.map((relatedBook) => (
+                <div
+                  key={relatedBook.id ?? relatedBook.slug ?? relatedBook.title}
+                  className="related_title_sec_card p-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md"
+                  style={{ maxWidth: "200px" }}
+                >
+                  <Link href={`/books/${relatedBook.slug}`}>
+                    <BooksCards
+                      title={relatedBook.title}
+                      coverImage={relatedBook.thumbnailUrl}
+                      authorName={relatedBook.author?.name ?? ""}
+                      imageContainerClass="h-[200px] lg:h-[250px] border_card"
+                    />
+                  </Link>
+                </div>
+              ))}
+            </div>
 
-            </section>
-          )}
+          </section>
+        )}
 
         {mounted && (
           <div className="hidden lg:block aside_fixed">
