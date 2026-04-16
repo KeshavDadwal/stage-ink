@@ -649,7 +649,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               </div>
             </div>
 
-            <section id="related-titles" className="container mx-auto px-4">
+            <section id="related-titles" className="container mx-auto px-4 mt-8">
 
               {/* Heading */}
               <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
@@ -694,7 +694,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     {/* Content */}
                     <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
                       <h3 className="font-bold text-sm tracking-wide uppercase">
-                        BOOK LAUNCH<br />GENOME TO OM
+                      Bangladesh: Humiliation, Carnage, Liberation, Chaos
                       </h3>
 
                       <p className="text-xs mt-3">
@@ -723,7 +723,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               </div>
             </section>
 
-            <section className="container mx-auto px-4 pb-12">
+            <section className="container mx-auto px-4 pb-12 mt-10">
               <div className="flex items-center gap-2 justify-center pb-6 pt-0">
                 <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
                 <h3 className="font-medium text-2xl text-center">

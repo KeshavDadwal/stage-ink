@@ -119,10 +119,10 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
           </div>
         </div>
         {isSpecialAuthor1 && (
-          <section id="related-titles" className="container mx-auto px-4">
+          <section id="related-titles" className="container mx-auto px-4 mt-10">
 
           {/* Heading */}
-          <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+          <div className="flex items-center gap-2 justify-center pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
             <h3 className="font-medium text-base md:text-3xl text-center">
               Others Books By {authorInfo.author_name}
@@ -131,7 +131,7 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
           </div>
 
           {/* Cards Container */}
-          <div className="flex flex-wrap justify-center mt-10">
+          <div className="flex flex-wrap justify-center mt-2">
 
             {[1, 2, 3, 4].map((_, i) => (
               <div
@@ -171,10 +171,10 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
         )}
 
         {isSpecialAuthor2 && (
-           <section id="related-titles" className="container mx-auto px-4">
+           <section id="related-titles" className="container mx-auto px-4 mt-10">
 
            {/* Heading */}
-           <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+           <div className="flex items-center gap-2 justify-center pt-6">
              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
              <h3 className="font-medium text-base md:text-3xl text-center">
                Others Books By {authorInfo.author_name}
@@ -183,7 +183,7 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
            </div>
  
            {/* Cards Container */}
-           <div className="flex flex-wrap justify-center mt-10">
+           <div className="flex flex-wrap justify-center mt-2">
  
              {[1, 2, 3, 4].map((_, i) => (
                <div
@@ -221,8 +221,8 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
            </div>
          </section>
         )}
-        <div className="books-section w-full pt-20">
-          <div className="flex items-center gap-2 justify-center pb-6 pt-6">
+        <div className="books-section w-full mt-10">
+          <div className="flex items-center gap-2 justify-center pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
             <i>
               <h3 className="font-semibold text-base md:text-3xl text-center">
@@ -234,7 +234,7 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
             <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
           </div>
 
-          <div className="wrapper mt-12 flex flex-wrap justify-center">
+          <div className="wrapper mt-2 flex flex-wrap justify-center">
             {authorInfo.books.length > 0 ? (
               authorInfo.books.map((book, i) => (
                 <div
