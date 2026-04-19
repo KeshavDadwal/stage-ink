@@ -61,6 +61,7 @@ export default async function Page({ params }) {
           : author.socialMedia
         : {},
       pressCoverage: bookData.pressCoverage || "",  
+      endorsements: bookData.endorsements || [],
     }));
 
   const categoryNames = [bookData.category, ...(bookData.additionalCategories || [])]
@@ -75,6 +76,7 @@ export default async function Page({ params }) {
 
   const bookInfo = {
     ...processBookData(bookData),
+    endorsements: bookData.endorsements || [],
     author: allAuthors[0] || null,
     authors: allAuthors,
     category: categoryNames,

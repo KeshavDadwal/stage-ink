@@ -32,10 +32,10 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   const [mediaStartIndex, setMediaStartIndex] = useState(0);
   const [activeMediaModal, setActiveMediaModal] = useState(null);
   const [mediaModalNonce, setMediaModalNonce] = useState(0);
+  const [activeEndorsementIndex, setActiveEndorsementIndex] = useState(0);
   useEffect(() => {
     setMounted(true);
   }, []);
-
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll("section[id]");
@@ -140,6 +140,20 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
     setActiveMediaModal(item);
     // Force iframe remount so autoplay is retriggered even for same video.
     setMediaModalNonce((prev) => prev + 1);
+  };
+
+  const handlePrevEndorsement = () => {
+    if (!bookInfo?.endorsements?.length) return;
+    setActiveEndorsementIndex((prev) =>
+      prev === 0 ? bookInfo.endorsements.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextEndorsement = () => {
+    if (!bookInfo?.endorsements?.length) return;
+    setActiveEndorsementIndex((prev) =>
+      (prev + 1) % bookInfo.endorsements.length
+    );
   };
 
   useEffect(() => {
@@ -605,7 +619,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                 <div className="flex flex-col lg:flex-row w-full lg:w-[80%] mx-auto">
 
                   {/* LEFT COLUMN */}
-                  <div className="w-full lg:w-[65%] p-4">
+                  <div className="w-full lg:w-[65%] p-4 flex items-center">
                     <div className="w-full lg:w-[90%]">
                       <i>
                         <p className="text-3xl pb-[45px] md:text-5xl font-medium text-left">
@@ -664,15 +678,6 @@ if (typeof Tally !== "undefined") {
                         className="mb-3 mx-auto object-contain"
                       />
                     </div>
-
-                    <a
-                      href="/bangladesh-sample-chapter.pdf"
-                      download
-                      className="inline-block mt-3 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
-                    >
-                      Download Sample Chapter (PDF)
-                    </a>
-
                   </div>
                 </div>
               </div>
@@ -705,37 +710,39 @@ if (typeof Tally !== "undefined") {
 
                 {/* Cards Row */}
                 <div className="w-full md:w-1/2 mx-auto">
+                  <a href="/resources/events/bangladesh-humiliation-carnage-liberation-chaos">
 
-                  {/* Card */}
-                  <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
+                    {/* Card */}
+                    <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
 
-                    {/* Image */}
-                    <div className="w-full sm:w-[60%] h-48 sm:h-auto">
-                      <Image
-                        src="https://bluone-ink.s3.us-east-1.amazonaws.com/events/banners/2e002f21-0598-4df7-846d-1d5be83bf4d1.jpeg"
-                        alt="event"
-                        width={800}
-                        height={500}
-                        className="w-full h-full object-cover"
-                      />
+                      {/* Image */}
+                      <div className="w-full sm:w-[60%] h-48 sm:h-auto">
+                        <Image
+                          src="https://bluone-ink.s3.us-east-1.amazonaws.com/events/banners/2e002f21-0598-4df7-846d-1d5be83bf4d1.jpeg"
+                          alt="event"
+                          width={800}
+                          height={500}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Content */}
+                      <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
+                        <h3 className="font-bold text-sm tracking-wide uppercase">
+                          Bangladesh: Humiliation, Carnage, Liberation, Chaos
+                        </h3>
+
+                        <p className="text-xs mt-3">
+                          25 April 2026<br />
+                          1700 HOURS
+                        </p>
+
+                        <p className="text-xs mt-2">
+                          Sushant Lok Phase I, Sector 43, Gurugram, Haryana
+                        </p>
+                      </div>
                     </div>
-
-                    {/* Content */}
-                    <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
-                      <h3 className="font-bold text-sm tracking-wide uppercase">
-                        Bangladesh: Humiliation, Carnage, Liberation, Chaos
-                      </h3>
-
-                      <p className="text-xs mt-3">
-                        25 April 2026<br />
-                        1700 HOURS
-                      </p>
-
-                      <p className="text-xs mt-2">
-                        Sushant Lok Phase I, Sector 43, Gurugram, Haryana
-                      </p>
-                    </div>
-                  </div>
+                  </a>
 
                 </div>
 
@@ -751,6 +758,48 @@ if (typeof Tally !== "undefined") {
 
               </div>
             </section>
+
+            {bookInfo.endorsements && bookInfo.endorsements.length > 0 && (
+              <div className="bg-[#AEC3CF] py-16 relative text-center px-4">
+                
+                {/* Left Arrow */}
+                {bookInfo.endorsements.length > 1 && (
+                  <button 
+                    onClick={handlePrevEndorsement}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow"
+                  >
+                    ‹
+                  </button>
+                )}
+
+                {/* Right Arrow */}
+                {bookInfo.endorsements.length > 1 && (
+                  <button 
+                    onClick={handleNextEndorsement}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow"
+                  >
+                    ›
+                  </button>
+                )}
+
+                {/* Quote */}
+                <div className="max-w-3xl mx-auto">
+                  <p className="text-xl md:text-2xl font-serif italic text-gray-800 leading-relaxed relative">
+                    <span className="text-4xl mr-2">“</span>
+                    {bookInfo.endorsements[activeEndorsementIndex]?.text}
+                    <span className="text-4xl ml-2">”</span>
+                  </p>
+
+                  {/* Author */}
+                  <p className="mt-6 text-lg font-semibold text-[#2E3A8C]">
+                    {bookInfo.endorsements[activeEndorsementIndex]?.personName}
+                  </p>
+                  <p className="text-sm text-[#2E3A8C] italic">
+                    {bookInfo.endorsements[activeEndorsementIndex]?.designation}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {bookInfo.pressCoverage && (<section className="container mx-auto px-4 mt-8">
               <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">

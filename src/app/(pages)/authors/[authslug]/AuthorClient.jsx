@@ -17,6 +17,41 @@ import {
 } from "react-icons/fa";
 
 const defaultImage = "/author-defaultimages.png";
+
+const iqbalBooks = [
+  {
+    image: "https://bluone-ink.s3.us-east-1.amazonaws.com/books/thumbnails/the-nukes-the-jihad-the-hawalas-and-crystal-meth-a-tale-of-treachery_thumbnail_1.jpg",
+    title: "The Nukes, the Jihad, the Hawalas, and Crystal Meth: A Tale of Treachery",
+    description: "Iqbal Chand Malhotra",
+    year: "2024"
+  },
+  {
+    image: "/81LrqJ1o0wL._SY466_.jpg",
+    title: "Red Fear: The China Threat",
+    description: "Iqbal Chand Malhotra",
+    year: "2020"
+  },
+  {
+    image: "/71QPU8QHowL._SY342_.jpg",
+    title: "Dark Secrets: Politics, Intrigue and Proxy Wars in Kashmir",
+    description: "Iqbal Chand Malhotra",
+    year: "2024"
+  },
+  {
+    image: "/71gG1mfJ1XL._SY466_.jpg",
+    title: "The Bomb, The Bank, The Mullah and The Poppies: A Tale of Deception",
+    description: "Iqbal Chand Malhotra",
+    year: "2023"
+  },
+  {
+    image: "/81W6dQ3rnFL._SY466_.jpg",
+    title: "Kashmir's Untold Story: Declassified",
+    description: "Iqbal Chand Malhotra",
+    year: "2021"
+  }
+
+];
+
 export default function AuthorClient({ authorInfo, hasSpotlights }) {
   const isSpecialAuthor1 =
     authorInfo?.author_name?.trim() ===
@@ -121,105 +156,106 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
         {isSpecialAuthor1 && (
           <section id="related-titles" className="container mx-auto px-4 mt-10">
 
-          {/* Heading */}
-          <div className="flex items-center gap-2 justify-center pt-6">
-            <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-            <h3 className="font-medium text-base md:text-3xl text-center">
-              Others Books By {authorInfo.author_name}
-            </h3>
-            <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-          </div>
+            {/* Heading */}
+            <div className="flex items-center gap-2 justify-center pt-6">
+              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+              <h3 className="font-medium text-base md:text-3xl text-center">
+                Others Books By {authorInfo.author_name}
+              </h3>
+              <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+            </div>
 
-          {/* Cards Container */}
-          <div className="flex flex-wrap justify-center mt-2">
+            {/* Cards Container */}
+            <div className="flex flex-wrap justify-center mt-2">
 
-            {[1, 2, 3, 4].map((_, i) => (
-              <div
-                key={i}
-                className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
-              >
-                <div className="w-full min-h-[300px] flex flex-col h-full">
+              {iqbalBooks.map((book, i) => (
+                <div
+                  key={i}
+                  className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+                >
+                  <div className="w-full min-h-[300px] flex flex-col h-full">
 
-                  {/* Image */}
-                  <div className="relative w-full h-[200px] lg:h-[300px]">
-                    <img
-                      src="/blogs.png"
-                      alt="event"
-                      className="w-full h-full object-cover"
-                    />
+                    {/* Image */}
+                    <div className="relative w-full h-[200px] lg:h-[300px]">
+                      <Image
+                        src={book.image}
+                        alt="event"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1">
+                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
+                        {book.title}
+                      </h6>
+
+                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
+                        {book.description}
+                      </h4>
+
+                      <p className="text-gray-500">{book.year}</p>
+                    </div>
+
                   </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                      Test
-                    </h6>
-
-                    <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                      testing 123fsdfasd
-                    </h4>
-
-                    <p className="text-gray-500">2001</p>
-                  </div>
-
                 </div>
-              </div>
-            ))}
+              ))}
 
-          </div>
-        </section>
+            </div>
+          </section>
         )}
 
         {isSpecialAuthor2 && (
-           <section id="related-titles" className="container mx-auto px-4 mt-10">
+          <section id="related-titles" className="container mx-auto px-4 mt-10">
 
-           {/* Heading */}
-           <div className="flex items-center gap-2 justify-center pt-6">
-             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-             <h3 className="font-medium text-base md:text-3xl text-center">
-               Others Books By {authorInfo.author_name}
-             </h3>
-             <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-           </div>
- 
-           {/* Cards Container */}
-           <div className="flex flex-wrap justify-center mt-2">
- 
-             {[1, 2, 3, 4].map((_, i) => (
-               <div
-                 key={i}
-                 className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
-               >
-                 <div className="w-full min-h-[300px] flex flex-col h-full">
- 
-                   {/* Image */}
-                   <div className="relative w-full h-[200px] lg:h-[300px]">
-                     <img
-                       src="/blogs.png"
-                       alt="event"
-                       className="w-full h-full object-cover"
-                     />
-                   </div>
- 
-                   {/* Content */}
-                   <div className="flex-1">
-                     <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
-                       Test
-                     </h6>
- 
-                     <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
-                       testing 123
-                     </h4>
- 
-                     <p className="text-gray-500">2001</p>
-                   </div>
- 
-                 </div>
-               </div>
-             ))}
- 
-           </div>
-         </section>
+            {/* Heading */}
+            <div className="flex items-center gap-2 justify-center pt-6">
+              <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+              <h3 className="font-medium text-base md:text-3xl text-center">
+                Others Books By {authorInfo.author_name}
+              </h3>
+              <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+            </div>
+
+            {/* Cards Container */}
+            <div className="flex flex-wrap justify-center mt-2">
+
+              {[1, 2, 3, 4].map((_, i) => (
+                <div
+                  key={i}
+                  className="p-4 mb-4 hover:shadow-md input-border border-[#ffffff00] hover:border-[#BABABA] rounded-md w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+                >
+                  <div className="w-full min-h-[300px] flex flex-col h-full">
+
+                    {/* Image */}
+                    <div className="relative w-full h-[200px] lg:h-[300px]">
+                      <img
+                        src="/blogs.png"
+                        alt="event"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1">
+                      <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
+                        Test
+                      </h6>
+
+                      <h4 className="uppercase font-normal font-barlow pt-2 text-base leading-5 text-[#0d1928e8]">
+                        testing 123
+                      </h4>
+
+                      <p className="text-gray-500">2001</p>
+                    </div>
+
+                  </div>
+                </div>
+              ))}
+
+            </div>
+          </section>
         )}
         <div className="books-section w-full mt-10">
           <div className="flex items-center gap-2 justify-center pt-6">
