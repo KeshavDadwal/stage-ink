@@ -612,7 +612,7 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
         )}
         <section id="endorsements">
           {bookInfo.testimonials && bookInfo.testimonials.length > 0 && (
-            <div className="wrapper bg-[#DDF5FF] w-full mt-14 mb-14">
+            <div className="wrapper bg-[#DDF5FF] w-full mt-14">
               <div className="container mx-auto p-10 pt-10">
                 <SliderBook testimonials={bookInfo.testimonials} />
               </div>
@@ -769,52 +769,36 @@ if (typeof Tally !== "undefined") {
               </div>
             </section>
 
-            {/* {bookInfo.pressCoverage && (<section className="container mx-auto px-4 mt-8">
-              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
-                <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
-                  Press Coverage
-                </h3>
-                <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-              </div>
-
-              <div
-                className="max-w-3xl mx-auto text-[14px] sm:text-[16px] text-[#0D1928] [&_a]:block [&_a]:mt-8 [&_a]:text-blue-600 [&_a]:underline"
-                dangerouslySetInnerHTML={{ __html: bookInfo.pressCoverage }}
-              />
+            {/* Press Coverage section */}
+            <section id="press-coverage">
+              {bookInfo.pressCoverage && (
+                <div className="wrapper bg-white w-full mt-14 mb-14">
+                  <div className="container mx-auto p-10 pt-10">
+                    <div className="flex items-center gap-2 justify-center pb-2">
+                      <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+                      <i>
+                        <h3 className="font-medium text-2xl md:text-2xl text-center">
+                          Press Coverage
+                        </h3>
+                      </i>
+                      <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+                    </div>
+                    <div
+                      className="mt-8 prose prose-lg max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: bookInfo.pressCoverage
+                          .replace(/&lt;/g, '<')
+                          .replace(/&gt;/g, '>')
+                          .replace(/&quot;/g, '"')
+                          .replace(/&amp;/g, '&')
+                          .replace(/\\"/g, '"')
+                          .replace(/\\\\/g, '\\')
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
             </section>
-            )} */}
-
-{/* Press Coverage section */}
-<section id="press-coverage">
-{bookInfo.pressCoverage && (
-<div className="wrapper bg-white w-full mt-14 mb-14">
-<div className="container mx-auto p-10 pt-10">
-<div className="flex items-center gap-2 justify-center pb-2">
-  <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-<i>
-  <h3 className="font-medium text-2xl md:text-2xl text-center">
-Press Coverage
-</h3>
-</i>
-<Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-</div>
-<div
-className="mt-8 prose prose-lg max-w-none"
-dangerouslySetInnerHTML={{
-__html: bookInfo.pressCoverage
-.replace(/&lt;/g, '<')
-.replace(/&gt;/g, '>')
-.replace(/&quot;/g, '"')
-.replace(/&amp;/g, '&')
-.replace(/\\"/g, '"')
-.replace(/\\\\/g, '\\')
-}}
-/>
-</div>
-</div>
-)}
-</section>
             <section className="container mx-auto px-4 pb-12 mt-10">
               <div className="flex items-center gap-2 justify-center pb-6 pt-0">
                 <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
