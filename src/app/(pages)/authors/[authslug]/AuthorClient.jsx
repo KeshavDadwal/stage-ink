@@ -176,12 +176,12 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
                   <div className="w-full min-h-[300px] flex flex-col h-full">
 
                     {/* Image */}
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
+                    <div className="relative w-full h-[250px] lg:h-[350px]">
                       <Image
                         src={book.image}
                         alt="event"
                         fill
-                        className="object-cover"
+                        className="object-contain"
                       />
                     </div>
 
@@ -229,11 +229,11 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
                   <div className="w-full min-h-[300px] flex flex-col h-full">
 
                     {/* Image */}
-                    <div className="relative w-full h-[200px] lg:h-[300px]">
+                    <div className="relative w-full h-[250px] lg:h-[350px]">
                       <img
                         src="/blogs.png"
                         alt="event"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
 
