@@ -12,6 +12,7 @@ import ShareButtons from "@/app/components/ImagePreviewSection";
 import Loader from "@/app/components/Loader";
 import Spotlight from "@/app/components/Spotlight";
 import Catalog from "../../../assests/image/ink_catalog_cover_2026.webp";
+import SliderBook from "@/app/components/SliderBook";
 import {
   FaLinkedinIn,
   FaFacebookF,
@@ -609,6 +610,15 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
               )}
           </>
         )}
+        <section id="endorsements">
+          {bookInfo.testimonials && bookInfo.testimonials.length > 0 && (
+            <div className="wrapper bg-[#DDF5FF] w-full mt-14 mb-14">
+              <div className="container mx-auto p-10 pt-10">
+                <SliderBook testimonials={bookInfo.testimonials} />
+              </div>
+            </div>
+          )}
+        </section>
         <section id="spotlight">
           <Spotlight bookSlug={bookInfo.slug?.replace(/-\d{13}$/, '') || bookInfo.slug} />
         </section>
@@ -758,48 +768,6 @@ if (typeof Tally !== "undefined") {
 
               </div>
             </section>
-
-            {bookInfo.endorsements && bookInfo.endorsements.length > 0 && (
-              <div className="bg-[#AEC3CF] py-16 relative text-center px-4">
-                
-                {/* Left Arrow */}
-                {bookInfo.endorsements.length > 1 && (
-                  <button 
-                    onClick={handlePrevEndorsement}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow"
-                  >
-                    ‹
-                  </button>
-                )}
-
-                {/* Right Arrow */}
-                {bookInfo.endorsements.length > 1 && (
-                  <button 
-                    onClick={handleNextEndorsement}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow"
-                  >
-                    ›
-                  </button>
-                )}
-
-                {/* Quote */}
-                <div className="max-w-3xl mx-auto">
-                  <p className="text-xl md:text-2xl font-serif italic text-gray-800 leading-relaxed relative">
-                    <span className="text-4xl mr-2">“</span>
-                    {bookInfo.endorsements[activeEndorsementIndex]?.text}
-                    <span className="text-4xl ml-2">”</span>
-                  </p>
-
-                  {/* Author */}
-                  <p className="mt-6 text-lg font-semibold text-[#2E3A8C]">
-                    {bookInfo.endorsements[activeEndorsementIndex]?.personName}
-                  </p>
-                  <p className="text-sm text-[#2E3A8C] italic">
-                    {bookInfo.endorsements[activeEndorsementIndex]?.designation}
-                  </p>
-                </div>
-              </div>
-            )}
 
             {bookInfo.pressCoverage && (<section className="container mx-auto px-4 mt-8">
               <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
