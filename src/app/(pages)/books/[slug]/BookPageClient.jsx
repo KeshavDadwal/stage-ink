@@ -632,8 +632,8 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                   <div className="w-full lg:w-[65%] p-4 flex items-center">
                     <div className="w-full lg:w-[90%]">
                       <i>
-                        <p className="text-3xl pb-[45px] md:text-5xl font-medium text-left">
-                          Ink in your Inbox
+                        <p className="text-2xl pb-[15px] md:text-4xl font-medium text-left">
+                          Download a Free Sample Chapter
                         </p>
                       </i>
 
@@ -693,113 +693,7 @@ if (typeof Tally !== "undefined") {
               </div>
             </div>
 
-            <section id="related-titles" className="container mx-auto px-4 mt-8">
-
-              {/* Heading */}
-              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
-                <Image
-                  src={inkdouble1}
-                  width={55}
-                  height={55}
-                  alt="inkdouble1"
-                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
-                />
-                <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
-                  Upcoming Events
-                </h3>
-                <Image
-                  src={inkdouble2}
-                  width={55}
-                  height={55}
-                  alt="inkdouble2"
-                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
-                />
-              </div>
-
-              <div className="flex flex-col items-center gap-6">
-
-                {/* Cards Row */}
-                <div className="w-full md:w-1/2 mx-auto">
-                  <a href="/resources/events/bangladesh-humiliation-carnage-liberation-chaos">
-
-                    {/* Card */}
-                    <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
-
-                      {/* Image */}
-                      <div className="w-full sm:w-[60%] h-48 sm:h-auto">
-                        <Image
-                          src="https://bluone-ink.s3.us-east-1.amazonaws.com/events/banners/2e002f21-0598-4df7-846d-1d5be83bf4d1.jpeg"
-                          alt="event"
-                          width={800}
-                          height={500}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {/* Content */}
-                      <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
-                        <h3 className="font-bold text-sm tracking-wide uppercase">
-                          Bangladesh: Humiliation, Carnage, Liberation, Chaos
-                        </h3>
-
-                        <p className="text-xs mt-3">
-                          25 April 2026<br />
-                          1700 HOURS
-                        </p>
-
-                        <p className="text-xs mt-2">
-                          Sushant Lok Phase I, Sector 43, Gurugram, Haryana
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-
-                </div>
-
-                {/* View All Link */}
-                <div className="flex items-center justify-center pb-6">
-                  <a
-                    href="/resources/events"
-                    className="text-[#007DD7] italic text-sm hover:underline"
-                  >
-                    View All Upcoming Events
-                  </a>
-                </div>
-
-              </div>
-            </section>
-
-            {/* Press Coverage section */}
-            <section id="press-coverage">
-              {bookInfo.pressCoverage && (
-                <div className="wrapper bg-white w-full mt-14 mb-14">
-                  <div className="container mx-auto p-10 pt-10">
-                    <div className="flex items-center gap-2 justify-center pb-2">
-                      <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                      <i>
-                        <h3 className="font-medium text-2xl md:text-2xl text-center">
-                          Press Coverage
-                        </h3>
-                      </i>
-                      <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
-                    </div>
-                    <div
-                      className="mt-8 prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: bookInfo.pressCoverage
-                          .replace(/&lt;/g, '<')
-                          .replace(/&gt;/g, '>')
-                          .replace(/&quot;/g, '"')
-                          .replace(/&amp;/g, '&')
-                          .replace(/\\"/g, '"')
-                          .replace(/\\\\/g, '\\')
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-            </section>
-            <section className="container mx-auto px-4 pb-12 mt-10">
+            <section className="container mx-auto px-4 pb-12 mt-16">
               <div className="flex items-center gap-2 justify-center pb-6 pt-0">
                 <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
                 <h3 className="font-medium text-2xl text-center">
@@ -960,6 +854,115 @@ if (typeof Tally !== "undefined") {
                 </div>
               )}
             </section>
+
+            <section id="related-titles" className="container mx-auto px-4">
+
+              {/* Heading */}
+              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
+                <Image
+                  src={inkdouble1}
+                  width={55}
+                  height={55}
+                  alt="inkdouble1"
+                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
+                />
+                <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
+                  Upcoming Events
+                </h3>
+                <Image
+                  src={inkdouble2}
+                  width={55}
+                  height={55}
+                  alt="inkdouble2"
+                  className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
+                />
+              </div>
+
+              <div className="flex flex-col items-center gap-6">
+
+                {/* Cards Row */}
+                <div className="w-full md:w-1/2 mx-auto">
+                  <a href="/resources/events/bangladesh-humiliation-carnage-liberation-chaos">
+
+                    {/* Card */}
+                    <div className="flex flex-col sm:flex-row bg-[#e9ddcf] rounded-lg overflow-hidden shadow-sm">
+
+                      {/* Image */}
+                      <div className="w-full sm:w-[60%] h-48 sm:h-auto">
+                        <Image
+                          src="https://bluone-ink.s3.us-east-1.amazonaws.com/events/banners/2e002f21-0598-4df7-846d-1d5be83bf4d1.jpeg"
+                          alt="event"
+                          width={800}
+                          height={500}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Content */}
+                      <div className="w-full sm:w-[40%] p-4 flex flex-col justify-center">
+                        <h3 className="font-bold text-sm tracking-wide uppercase">
+                          Bangladesh: Humiliation, Carnage, Liberation, Chaos
+                        </h3>
+
+                        <p className="text-xs mt-3">
+                          25 April 2026<br />
+                          1700 HOURS
+                        </p>
+
+                        <p className="text-xs mt-2">
+                          Sushant Lok Phase I, Sector 43, Gurugram, Haryana
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+
+                </div>
+
+                {/* View All Link */}
+                <div className="flex items-center justify-center pb-6">
+                  <a
+                    href="/resources/events"
+                    className="text-[#007DD7] italic text-sm hover:underline"
+                  >
+                    View All Upcoming Events
+                  </a>
+                </div>
+
+              </div>
+            </section>
+
+            {/* Press Coverage section */}
+            <section id="press-coverage">
+              {bookInfo.pressCoverage && (
+                <div className="wrapper bg-white w-full mt-14 mb-14">
+                  <div className="container mx-auto p-10 pt-10">
+                    <div className="flex items-center gap-2 justify-center pb-2">
+                      <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
+                      <i>
+                        <h3 className="font-medium text-2xl md:text-2xl text-center">
+                          Press Coverage
+                        </h3>
+                      </i>
+                      <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
+                    </div>
+                    <div
+                      className="mt-8 prose prose-lg max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: bookInfo.pressCoverage
+                          .replace(/&lt;/g, '<')
+                          .replace(/&gt;/g, '>')
+                          .replace(/&quot;/g, '"')
+                          .replace(/&amp;/g, '&')
+                          .replace(/\\"/g, '"')
+                          .replace(/\\\\/g, '\\')
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            </section>
+
+            
           </>
         )}
 
