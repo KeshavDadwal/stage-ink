@@ -206,10 +206,9 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
           </section>
         )}
 
-        {isSpecialAuthor2 && (
+        {/* {isSpecialAuthor2 && (
           <section id="related-titles" className="container mx-auto px-4 mt-10">
 
-            {/* Heading */}
             <div className="flex items-center gap-2 justify-center pt-6">
               <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
               <h3 className="font-medium text-base md:text-3xl text-center">
@@ -218,7 +217,6 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
               <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
             </div>
 
-            {/* Cards Container */}
             <div className="flex flex-wrap justify-center mt-2">
 
               {[1, 2, 3, 4].map((_, i) => (
@@ -228,7 +226,6 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
                 >
                   <div className="w-full min-h-[300px] flex flex-col h-full">
 
-                    {/* Image */}
                     <div className="relative w-full h-[250px] lg:h-[350px]">
                       <img
                         src="/blogs.png"
@@ -237,7 +234,6 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
                       />
                     </div>
 
-                    {/* Content */}
                     <div className="flex-1">
                       <h6 className="pt-4 uppercase font-semibold font-barlow leading-5">
                         Test
@@ -256,7 +252,7 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
 
             </div>
           </section>
-        )}
+        )} */}
         <div className="books-section w-full mt-10">
           <div className="flex items-center gap-2 justify-center pt-6">
             <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
