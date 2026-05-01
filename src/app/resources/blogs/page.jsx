@@ -26,7 +26,7 @@ export default function Page() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`${getPortalBaseUrl()}/api/public/blogs`);
+        const response = await fetch(`${getPortalBaseUrl()}/api/public/blogs`, { cache: "no-store" });
         if (!response.ok) {
           throw new Error('Failed to fetch blogs');
         }

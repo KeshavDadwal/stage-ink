@@ -36,7 +36,7 @@ const SliderBook = ({ testimonials = [] }) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 10000,
-    adaptiveHeight: true,
+    adaptiveHeight: false,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };

@@ -56,7 +56,7 @@ async function fetchV1BooksOnServer({
   if (!isSearch && genre?.length) params.set("genre", genre.join(","));
 
   const res = await fetch(`${endpoint}?${params.toString()}`, {
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
   if (!res.ok) return null;
   return res.json();

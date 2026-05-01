@@ -4,7 +4,8 @@ import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 export const getAllAuthors = async (page = 1, limit = 10) => {
   try {
     const response = await fetch(
-      `${getPortalBaseUrl()}/api/public/books/search?page=${page}&limit=${limit}`
+      `${getPortalBaseUrl()}/api/public/books/search?page=${page}&limit=${limit}`,
+      { cache: "no-store" }
     );
     
     if (!response.ok) {

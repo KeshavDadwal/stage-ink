@@ -21,7 +21,7 @@ export async function fetchSpotlights(filters = {}) {
 
     const url = params.toString() ? `${BASE_URL}?${params.toString()}` : BASE_URL;
 
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch spotlights: ${response.statusText}`);

@@ -40,7 +40,7 @@ export default function Page() {
   useEffect(() => {
     const fetchGalleryData = async () => {
       try {
-        const response = await fetch(`${getPortalBaseUrl()}/api/public/gallery`);
+        const response = await fetch(`${getPortalBaseUrl()}/api/public/gallery`, { cache: "no-store" });
         const data = await response.json();
         setGallery(data);
         setLoading(false);

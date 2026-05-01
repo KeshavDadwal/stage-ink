@@ -9,7 +9,8 @@ export default function AlphabetFilter({ onFilter }) {
     async function fetchLetters() {
       try {
         const response = await fetch(
-         `${getPortalBaseUrl()}/api/public/authors/letters`
+         `${getPortalBaseUrl()}/api/public/authors/letters`,
+         { cache: "no-store" }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch author letters");

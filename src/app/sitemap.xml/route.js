@@ -6,10 +6,10 @@ export async function GET() {
 
   // Fetch all dynamic data
   const [authorsRes, booksRes, blogsRes, eventsRes] = await Promise.all([
-    fetch(`${portalBaseUrl}/api/public/authors`),
-    fetch(`${portalBaseUrl}/api/public/books`),
-    fetch(`${portalBaseUrl}/api/public/blogs`),
-    fetch(`${portalBaseUrl}/api/public/events`),
+    fetch(`${portalBaseUrl}/api/public/authors`, { cache: "no-store" }),
+    fetch(`${portalBaseUrl}/api/public/books`, { cache: "no-store" }),
+    fetch(`${portalBaseUrl}/api/public/blogs`, { cache: "no-store" }),
+    fetch(`${portalBaseUrl}/api/public/events`, { cache: "no-store" }),
   ]);
 
   const authors = await authorsRes.json();

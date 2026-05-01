@@ -15,7 +15,7 @@ const Page = ({ params }) => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await fetch(`${getPortalBaseUrl()}/api/public/events/${eventslug}`);
+        const response = await fetch(`${getPortalBaseUrl()}/api/public/events/${eventslug}`, { cache: "no-store" });
         if (!response.ok) {
           throw new Error('Event not found');
         }

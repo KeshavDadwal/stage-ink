@@ -7,7 +7,7 @@ const ALLOWED_CATEGORIES = ["Fiction", "Non-Fiction", "Children"];
 export default async function Page() {
   const res = await fetch(
     `${getPortalBaseUrl()}/api/v1/public/categories/latest-books`,
-    { next: { revalidate: 60 } }
+    { cache: "no-store" }
   );
 
   if (!res.ok) {

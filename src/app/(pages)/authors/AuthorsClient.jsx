@@ -53,7 +53,7 @@ export default function AuthorsClient({
         if (debouncedSearchQuery) params.set("search", debouncedSearchQuery);
         if (alphabetFilter !== "ALL") params.set("letter", alphabetFilter);
 
-        const response = await fetch(`${AUTHORS_API}?${params.toString()}`);
+        const response = await fetch(`${AUTHORS_API}?${params.toString()}`, { cache: "no-store" });
         const data = await response.json();
 
         if (!response.ok) {

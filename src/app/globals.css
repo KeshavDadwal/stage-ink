@@ -57,6 +57,21 @@ html {
   .btn_sapna{background: #fff; padding: 0px; border-radius: 30px; border: 1px solid #383085; }
   .btn_bookswagon{background: #fff; padding: 0px; border-radius: 30px; border: 1px solid #bd2029; }
 
+  .slick-track {
+  display: flex !important;
+}
+
+.slick-slide {
+  height: inherit !important;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+.slick-initialized .slick-slide {
+    align-self: center;
+}
+
   /* Responsive styles for mobile Footer*/
 @media (max-width: 768px) {
  

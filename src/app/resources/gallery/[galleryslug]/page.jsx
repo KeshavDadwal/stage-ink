@@ -23,7 +23,7 @@ const Page = ({ params }) => {
   useEffect(() => {
     const fetchGalleryData = async () => {
       try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, { cache: "no-store" });
         const data = await response.json();
         setGalleryData(data);
       } catch (error) {

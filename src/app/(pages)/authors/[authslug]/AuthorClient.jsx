@@ -103,9 +103,9 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
             style={{ objectFit: "cover", objectPosition: "top" }}
           />
           <div className="text-center" style={{ position: "relative", zIndex: 1 }}>
-            <h4 className="mt-20 pt-10 text-[28px] lg:text-4xl mb-5">
+            <h1 className="mt-20 pt-10 text-[28px] lg:text-4xl mb-5 font-medium">
               {authorInfo.author_name}
-            </h4>
+            </h1>
 
             <p className="text-start pt-4 pb-4 ">
               {isExpanded ? fullDescription : shortDescription}
@@ -184,6 +184,7 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
                         className="object-contain"
                       />
                     </div>
+
 
                     {/* Content */}
                     <div className="flex-1">

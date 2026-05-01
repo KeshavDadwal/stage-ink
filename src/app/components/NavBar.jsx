@@ -66,7 +66,7 @@ function NavBar({ categoryCounts = {} }) {
         setLoading(true);
         const res = await fetch(
           `${getPortalBaseUrl()}/api/v1/public/books-list/search?search=${encodeURIComponent(query)}&limit=6`,
-          { signal: controller.signal }
+          { signal: controller.signal, cache: "no-store" }
         );
   
         if (!res.ok) throw new Error("Search failed");

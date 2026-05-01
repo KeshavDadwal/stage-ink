@@ -26,12 +26,11 @@ const Page = ({ params }) => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`${getPortalBaseUrl()}/api/public/blogs/${blogslug}`);
+        const response = await fetch(`${getPortalBaseUrl()}/api/public/blogs/${blogslug}`, { cache: "no-store" });
         if (!response.ok) {
           throw new Error("Blog not found");
         }
         const data = await response.json();
-        console.log("Current blog data:", data); // Debug log
         setBlog(processBlogData(data));
       } catch (error) {
         console.error(error);
@@ -82,8 +81,8 @@ const Page = ({ params }) => {
               relatedBlogCategory: relatedBlog.categories,
               currentCategory: blog.categories
             });
-            return relatedBlog.slug !== blogslug && 
-                   relatedBlog.categories === blog.categories;
+            return relatedBlog.slug !== blogslug &&
+              relatedBlog.categories === blog.categories;
           }
         );
         console.log("Filtered related blogs:", filtered);
@@ -202,13 +201,11 @@ const Page = ({ params }) => {
             </div>
 
             <div
-              className={`${
-                relatedBlogs.length > 2
-                  ? `grid grid-cols-2 lg:grid-cols-3 ${
-                      relatedBlogs.length < 6 ? "justify-between" : "justify-center"
-                    }`
+              className={`${relatedBlogs.length > 2
+                  ? `grid grid-cols-2 lg:grid-cols-3 ${relatedBlogs.length < 6 ? "justify-between" : "justify-center"
+                  }`
                   : "flex justify-center"
-              }`}
+                }`}
             >
               {relatedBlogs.length > 0 ? (
                 relatedBlogs

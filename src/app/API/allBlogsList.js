@@ -4,7 +4,8 @@ import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 export const allBlogsList = async (page = 1, limit = 10) => {
   try {
     const response = await fetch(
-      `${getPortalBaseUrl()}/api/public/blogs?page=${page}&limit=${limit}`
+      `${getPortalBaseUrl()}/api/public/blogs?page=${page}&limit=${limit}`,
+      { cache: "no-store" }
     );
     
     if (!response.ok) {
@@ -33,7 +34,8 @@ export const allBlogsList = async (page = 1, limit = 10) => {
 export const getAllBlogs = async () => {
   try {
     const response = await fetch(
-      `${getPortalBaseUrl()}/api/public/blogs`
+      `${getPortalBaseUrl()}/api/public/blogs`,
+      { cache: "no-store" }
     );
     
     if (!response.ok) {

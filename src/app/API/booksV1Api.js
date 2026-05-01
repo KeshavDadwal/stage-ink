@@ -1,7 +1,7 @@
 import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 
 async function fetchJson(url) {
-  const res = await fetch(url, { next: { revalidate: 60 } });
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
 }

@@ -11,12 +11,14 @@ const API_BASE_URL = `${getPortalBaseUrl()}/api/public`;
  */
 export async function fetchHeroSections() {
   try {
-    const response = await fetch(`${API_BASE_URL}/hero-section`);
-    
+    const response = await fetch(`${API_BASE_URL}/hero-section`, {
+      cache: "no-store",
+    });
+
     if (!response.ok) {
       throw new Error(`Failed to fetch hero sections: ${response.status} ${response.statusText}`);
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {

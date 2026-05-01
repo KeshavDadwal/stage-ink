@@ -11,7 +11,7 @@ const API_BASE_URL = `${getPortalBaseUrl()}/api/public`;
  */
 export async function fetchAllBooks() {
   try {
-    const response = await fetch(`${API_BASE_URL}/books`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/books`, { cache: "no-store" });
     
     if (!response.ok) {
       throw new Error(`Failed to fetch books: ${response.status} ${response.statusText}`);
@@ -32,7 +32,7 @@ export async function fetchAllBooks() {
  */
 export async function fetchBookBySlug(slug) {
   try {
-    const response = await fetch(`${API_BASE_URL}/books/${slug}`, { cache: 'no-store' });
+    const response = await fetch(`${API_BASE_URL}/books/${slug}`, { cache: "no-store" });
     if (!response.ok) {
       throw new Error(`Failed to fetch book: ${response.status} ${response.statusText}`);
     }

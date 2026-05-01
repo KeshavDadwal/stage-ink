@@ -29,7 +29,8 @@ export default function SearchContent() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${getPortalBaseUrl()}/api/v1/public/books-list/search?search=${encodeURIComponent(query)}&limit=6`
+          `${getPortalBaseUrl()}/api/v1/public/books-list/search?search=${encodeURIComponent(query)}&limit=6`,
+          { cache: "no-store" }
         );
         if (res.ok) {
           const data = await res.json();

@@ -26,7 +26,7 @@ export default function Page() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const response = await fetch(`${getPortalBaseUrl()}/api/public/events`);
+        const response = await fetch(`${getPortalBaseUrl()}/api/public/events`, { cache: "no-store" });
         const data = await response.json();
         const mappedEvents = data.map((event) => ({
           id: event.id,

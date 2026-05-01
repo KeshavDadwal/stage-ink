@@ -4,7 +4,7 @@ import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 async function fetchAuthorBySlug(authslug) {
   const res = await fetch(
     `${getPortalBaseUrl()}/api/public/authors/${authslug}`,
-    { next: { revalidate: 60 } }
+    { cache: "no-store" }
   );
 
   if (!res.ok) return null;
@@ -18,7 +18,7 @@ async function fetchSpotlightsByAuthor(slug) {
   try {
     const res = await fetch(
       `${getPortalBaseUrl()}/api/public/spotlights?authorSlug=${slug}&isActive=true`,
-      { next: { revalidate: 60 } }
+      { cache: "no-store" }
     );
 
     if (!res.ok) return [];
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }) {
   const fallbackTitle = `${data.name} | BluOne Ink Author`;
   return {
     title: data.metaTitle || fallbackTitle,
-    description: data.metaDescription || "Ink Author",
+    description: data.metaDescription,
     keywords: data.metaKeywords || undefined,
     alternates: {
       canonical: `https://www.bluone.ink/authors/${authslug}`,

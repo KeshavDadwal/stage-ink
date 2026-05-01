@@ -210,406 +210,394 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   return (
     <>
       <main id="top" suppressHydrationWarning>
-        {!mounted ? (
-          <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader />
-          </div>
-        ) : (
-          <>
-            <ScriptLoader />
-            <section className="relative z-[111] bg-white">
-              <div className="container bg-white p-6 mt-10 z-50">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-                  <div className="w-full md:w-[50%] lg:sticky lg:top-14 h-fit flex flex-wrap lg:flex-nowrap lg:flex gap-4">
-                    <div className="md:hidden block">
-                      <div className="flex gap-1 text-[#000]">
-                        <p className="flex items-center text-[12px] font-semibold">
-                          <Link href={`/books`}>Books</Link>
-                        </p>
-                        <p className="flex items-center pt-1 w-3">
-                          <RiArrowRightSLine />
-                        </p>
-                        <p className="flex items-center text-[12px]">
-                          <Link href={`/books?category=${bookInfo.category}`}>
-                            {bookInfo.category}
+        <ScriptLoader />
+        <section className="relative z-[111] bg-white">
+          <div className="container bg-white p-6 mt-10 z-50">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-[50%] lg:sticky lg:top-14 h-fit flex flex-wrap lg:flex-nowrap lg:flex gap-4">
+                <div className="md:hidden block">
+                  <div className="flex gap-1 text-[#000]">
+                    <p className="flex items-center text-[12px] font-semibold">
+                      <Link href={`/books`}>Books</Link>
+                    </p>
+                    <p className="flex items-center pt-1 w-3">
+                      <RiArrowRightSLine />
+                    </p>
+                    <p className="flex items-center text-[12px]">
+                      <Link href={`/books?category=${bookInfo.category}`}>
+                        {bookInfo.category}
+                      </Link>
+                    </p>
+                  </div>
+                  <h1 className="text-[28px] lg:text-4xl font-semibold">
+                    {bookInfo.title}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-1">
+                    {authorNames.map((author, index) => {
+                      const authorObj = bookInfo.authors?.find(
+                        (a) => a.author_name === author
+                      );
+                      const key = authorObj?.authslug ?? authorObj?.id ?? index;
+                      return (
+                        <div key={key} className="flex items-center pt-2 italic">
+                          <Link
+                            href={`/authors/${authorObj?.authslug || ""}`}
+                            className="text-[20px] text-[#007DD7]"
+                          >
+                            {author}
                           </Link>
-                        </p>
-                      </div>
-                      <h2 className="text-[28px] lg:text-4xl font-semibold">
-                        {bookInfo.title}
-                      </h2>
-                      <div className="flex flex-wrap items-center gap-1">
-                        {authorNames.map((author, index) => {
-                          const authorObj = bookInfo.authors?.find(
-                            (a) => a.author_name === author
-                          );
-                          const key = authorObj?.authslug ?? authorObj?.id ?? index;
-                          return (
-                            <i key={key}>
-                              <div className="flex items-center pt-2">
-                                <Link
-                                  href={`/authors/${authorObj?.authslug || ""}`}
-                                  className="text-[20px] text-[#007DD7]"
-                                >
-                                  {author}
-                                </Link>
-                                {index < authorNames.length - 1 && <span>,&nbsp;</span>}
-                              </div>
-                            </i>
-                          );
-                        })}
-                      </div>
-                      <p className="text-xl font-bold mt-2">₹{bookInfo.price}</p>
-                    </div>
+                          {index < authorNames.length - 1 && <span>,&nbsp;</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="text-xl font-bold mt-2">₹{bookInfo.price}</p>
+                </div>
 
-                    <div className="order-2 lg:order-1 flex lg:flex-col gap-4 overflow-x-auto">
+                <div className="order-2 lg:order-1 flex lg:flex-col gap-4 overflow-x-auto">
+                  <div
+                    className="w-12 h-12 bg-gray-300 border lg:overflow-hidden cursor-pointer relative"
+                    onClick={() =>
+                      setSelectedImage(processImageUrl(bookInfo.book_image))
+                    }
+                  >
+                    <Image
+                      src={processImageUrl(bookInfo.book_image)}
+                      alt="Default Thumbnail"
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {clonedThumbnails &&
+                    clonedThumbnails.length > 0 &&
+                    clonedThumbnails.slice(0, 5).map((thumbnail, i) => (
                       <div
-                        className="w-12 h-12 bg-gray-300 border lg:overflow-hidden cursor-pointer relative"
-                        onClick={() =>
-                          setSelectedImage(processImageUrl(bookInfo.book_image))
-                        }
+                        key={`${thumbnail}-${i}`}
+                        className="w-12 h-12 bg-gray-300 border overflow-hidden cursor-pointer relative"
+                        onClick={() => setSelectedImage(thumbnail)}
                       >
                         <Image
-                          src={processImageUrl(bookInfo.book_image)}
-                          alt="Default Thumbnail"
+                          src={thumbnail}
+                          alt={`Thumbnail ${i + 1}`}
                           fill
                           sizes="48px"
                           className="object-cover"
                         />
                       </div>
+                    ))}
+                </div>
 
-                      {clonedThumbnails &&
-                        clonedThumbnails.length > 0 &&
-                        clonedThumbnails.slice(0, 5).map((thumbnail, i) => (
-                          <div
-                            key={`${thumbnail}-${i}`}
-                            className="w-12 h-12 bg-gray-300 border overflow-hidden cursor-pointer relative"
-                            onClick={() => setSelectedImage(thumbnail)}
-                          >
-                            <Image
-                              src={thumbnail}
-                              alt={`Thumbnail ${i + 1}`}
-                              fill
-                              sizes="48px"
-                              className="object-cover"
-                            />
-                          </div>
-                        ))}
-                    </div>
+                <div className="order-1 lg:order-2 w-full h-[500px] bg-gray-200 border flex items-center justify-center overflow-hidden relative">
+                  <Image
+                    src={selectedImage || processImageUrl(bookInfo.book_image)}
+                    alt={bookInfo.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
 
-                    <div className="order-1 lg:order-2 w-full h-[500px] bg-gray-200 border flex items-center justify-center overflow-hidden relative">
-                      <Image
-                        src={selectedImage || processImageUrl(bookInfo.book_image)}
-                        alt={bookInfo.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-contain"
-                      />
-                    </div>
+              <div className="w-full md:w-[50%] space-y-4">
+                <div className="hidden md:block">
+                  <div className="flex gap-1 text-[#000]">
+                    <p className="flex items-center text-[12px] font-semibold">
+                      <Link href={`/books`}>Books</Link>
+                    </p>
+                    <p className="flex items-center pt-1 w-3">
+                      <RiArrowRightSLine />
+                    </p>
+                    <p className="flex items-center text-[12px]">
+                      <Link href={`/books?category=${bookInfo.category?.split(",")[0]}`}>
+                        {bookInfo.category?.split(",")[0]}
+                      </Link>
+                    </p>
+                  </div>
+                  <div className="flex gap-4 pt-2">
+                    <h2 className="text-[28px] leading-8 font-semibold">{bookInfo.title}</h2>
+                    {mounted ? <ShareButtons /> : null}
                   </div>
 
-                  <div className="w-full md:w-[50%] space-y-4">
-                    <div className="hidden md:block">
-                      <div className="flex gap-1 text-[#000]">
-                        <p className="flex items-center text-[12px] font-semibold">
-                          <Link href={`/books`}>Books</Link>
-                        </p>
-                        <p className="flex items-center pt-1 w-3">
-                          <RiArrowRightSLine />
-                        </p>
-                        <p className="flex items-center text-[12px]">
-                          <Link href={`/books?category=${bookInfo.category?.split(",")[0]}`}>
-                            {bookInfo.category?.split(",")[0]}
+                  <div className="flex flex-wrap items-center gap-1">
+                    {authorNames.map((author, index) => {
+                      const authorObj = bookInfo.authors?.find(
+                        (a) => a.author_name === author
+                      );
+                      const key = authorObj?.authslug ?? authorObj?.id ?? index;
+                      return (
+                        <div key={key} className="flex text-[16px] items-center pt-2 italic">
+                          <Link
+                            href={`/authors/${authorObj?.authslug || ""}`}
+                            className="text-[16px] text-[#007DD7]"
+                          >
+                            {author}
                           </Link>
-                        </p>
-                      </div>
-                      <div className="flex gap-4 pt-2">
-                        <h2 className="text-[28px] leading-8 font-semibold">{bookInfo.title}</h2>
-                        {mounted ? <ShareButtons /> : null}
-                      </div>
+                          {index < authorNames.length - 1 && <span>,&nbsp;</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="text-xl font-semibold font-barlow mt-2">₹{bookInfo.price}</p>
+                </div>
 
-                      <div className="flex flex-wrap items-center gap-1">
-                        {authorNames.map((author, index) => {
-                          const authorObj = bookInfo.authors?.find(
-                            (a) => a.author_name === author
-                          );
-                          const key = authorObj?.authslug ?? authorObj?.id ?? index;
-                          return (
-                            <i key={key}>
-                              <div className="flex text-[16px] items-center pt-2">
-                                <Link
-                                  href={`/authors/${authorObj?.authslug || ""}`}
-                                  className="text-[16px] text-[#007DD7]"
-                                >
-                                  {author}
-                                </Link>
-                                {index < authorNames.length - 1 && <span>,&nbsp;</span>}
-                              </div>
-                            </i>
-                          );
-                        })}
-                      </div>
-                      <p className="text-xl font-semibold font-barlow mt-2">₹{bookInfo.price}</p>
-                    </div>
+                {/* Show Buy Now button only if NOT special book */}
+                {!isSpecialBook && (
+                  <button
+                    className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow mb-4"
+                    onClick={() => setShowButtons(!showButtons)}
+                  >
+                    Buy Now
+                  </button>
+                )}
 
-                    {/* Show Buy Now button only if NOT special book */}
-                    {!isSpecialBook && (
-                      <button
-                        className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow mb-4"
-                        onClick={() => setShowButtons(!showButtons)}
-                      >
-                        Buy Now
-                      </button>
-                    )}
-
-                    {/* Show links:
+                {/* Show links:
     - Always for special book
     - Toggle-based for others */}
-                    {(isSpecialBook || showButtons) && (
-                      <div className="flex flex-wrap md:gap-4 gap-2 pt-3">
-                        {bookInfo.amazonlink && (
-                          <Link href={bookInfo.amazonlink} target="_blank">
-                            <button>
-                              <Image src="/amazon_in.png" width={118} height={118} alt="Amazon India" />
-                            </button>
-                          </Link>
-                        )}
-
-                        {bookInfo.amazon_comlink && (
-                          <Link href={bookInfo.amazon_comlink} target="_blank">
-                            <button>
-                              <Image src="/amazon_com.png" width={135} height={135} alt="Amazon.com" />
-                            </button>
-                          </Link>
-                        )}
-
-                        {bookInfo.flipkartlink && (
-                          <Link href={bookInfo.flipkartlink} target="_blank">
-                            <button>
-                              <Image src="/flipkart.png" width={122} height={122} alt="Flipkart" />
-                            </button>
-                          </Link>
-                        )}
-
-                        {bookInfo.bookswagonLink && (
-                          <Link href={bookInfo.bookswagonLink} target="_blank">
-                            <button>
-                              <Image src="/bookswagon.png" width={122} height={122} alt="Bookswagon" />
-                            </button>
-                          </Link>
-                        )}
-
-                        {bookInfo.sapnaBooksLink && (
-                          <Link href={bookInfo.sapnaBooksLink} target="_blank">
-                            <button>
-                              <Image src="/sapna_btn.png" width={100} height={122} alt="Sapna" />
-                            </button>
-                          </Link>
-                        )}
-                      </div>
+                {(isSpecialBook || showButtons) && (
+                  <div className="flex flex-wrap md:gap-4 gap-2 pt-3">
+                    {bookInfo.amazonlink && (
+                      <Link href={bookInfo.amazonlink} target="_blank">
+                        <button>
+                          <Image src="/amazon_in.png" width={118} height={118} alt="Amazon India" />
+                        </button>
+                      </Link>
                     )}
 
-                    {bookInfo.aiSheetUrl && (
-                      <a
-                        href={bookInfo.aiSheetUrl}
-                        className="text-blue-600 underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Download AI Sheet
-                      </a>
+                    {bookInfo.amazon_comlink && (
+                      <Link href={bookInfo.amazon_comlink} target="_blank">
+                        <button>
+                          <Image src="/amazon_com.png" width={135} height={135} alt="Amazon.com" />
+                        </button>
+                      </Link>
                     )}
 
-                    <div>
-                      <h3 className="text-[20px] lg:text-1xl font-semibold mt-4">Specification</h3>
-                      <ul className="text-sm text-[#000] mt-1 space-y-0">
-                        <li>
-                          {Array.isArray(versions) && versions.length > 1 ? (
-                            <>
-                              <label htmlFor="language-select" className="mr-2">
-                                Language:
-                              </label>
-                              <select
-                                id="language-select"
-                                className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
-                                onChange={(e) => {
-                                  const selectedSlug = e.target.value;
-                                  if (selectedSlug && selectedSlug !== bookInfo.slug) {
-                                    window.location.href = `/books/${selectedSlug}`;
-                                  }
-                                }}
-                                value={bookInfo.slug}
-                              >
-                                {versions.map((v) => (
-                                  <option key={`${v.language}-${v.slug}`} value={v.slug}>
-                                    {v.language}
-                                  </option>
-                                ))}
-                              </select>
-                            </>
-                          ) : versions?.length === 1 ? (
-                            <>
-                              <span className="mr-2">Language:</span>
-                              <span>{versions[0].language}</span>
-                            </>
-                          ) : null}
-                        </li>
-                        <li>Format: {bookInfo?.book_format}</li>
-                        <li>Pages: {bookInfo.pages} pages</li>
-                        <li>ISBN-13: {bookInfo.isbn13}</li>
-                        <li>Item Weight: {bookInfo.weight}</li>
-                        <li>Dimensions: {bookInfo.dimension}</li>
-                        <li>Genre: {bookInfo?.genre}</li>
-                      </ul>
-                    </div>
+                    {bookInfo.flipkartlink && (
+                      <Link href={bookInfo.flipkartlink} target="_blank">
+                        <button>
+                          <Image src="/flipkart.png" width={122} height={122} alt="Flipkart" />
+                        </button>
+                      </Link>
+                    )}
 
-                    <div>
-                      <h3 className="text-[20px] lg:text-1xl font-semibold mt-6">Description</h3>
-                      <p className="text-[16px] leading-1 text-start font-normal book-info-html pt-2">
-                        <span
-                          className="text-[26px] font-ibm"
-                          dangerouslySetInnerHTML={{
-                            __html: (isExpanded
-                              ? bookInfo.about_book
-                              : `${bookInfo.about_book?.substring(0, maxLength)} `)
-                              ?.replace(/&lt;/g, "<")
-                              .replace(/&gt;/g, ">")
-                              .replace(/&quot;/g, '"')
-                              .replace(/&amp;/g, "&")
-                              .replace(/\\"/g, '"')
-                              .replace(/\\\\/g, "\\")
-                              .replace(/&nbsp;/g, " "),
-                          }}
-                        />
-                        {bookInfo.about_book && bookInfo.about_book.length > maxLength && (
-                          <button
-                            onClick={toggleExpand}
-                            className="text-[#0D1928] underline font-medium inline"
+                    {bookInfo.bookswagonLink && (
+                      <Link href={bookInfo.bookswagonLink} target="_blank">
+                        <button>
+                          <Image src="/bookswagon.png" width={122} height={122} alt="Bookswagon" />
+                        </button>
+                      </Link>
+                    )}
+
+                    {bookInfo.sapnaBooksLink && (
+                      <Link href={bookInfo.sapnaBooksLink} target="_blank">
+                        <button>
+                          <Image src="/sapna_btn.png" width={100} height={122} alt="Sapna" />
+                        </button>
+                      </Link>
+                    )}
+                  </div>
+                )}
+
+                {bookInfo.aiSheetUrl && (
+                  <a
+                    href={bookInfo.aiSheetUrl}
+                    className="text-blue-600 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Download AI Sheet
+                  </a>
+                )}
+
+                <div>
+                  <h3 className="text-[20px] lg:text-1xl font-semibold mt-4">Specifications</h3>
+                  <ul className="text-sm text-[#000] mt-1 space-y-0">
+                    <li>
+                      {Array.isArray(versions) && versions.length > 1 ? (
+                        <>
+                          <label htmlFor="language-select" className="mr-2">
+                            Language:
+                          </label>
+                          <select
+                            id="language-select"
+                            className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
+                            onChange={(e) => {
+                              const selectedSlug = e.target.value;
+                              if (selectedSlug && selectedSlug !== bookInfo.slug) {
+                                window.location.href = `/books/${selectedSlug}`;
+                              }
+                            }}
+                            value={bookInfo.slug}
                           >
-                            {isExpanded ? "Read Less" : "Read More"}
+                            {versions.map((v) => (
+                              <option key={`${v.language}-${v.slug}`} value={v.slug}>
+                                {v.language}
+                              </option>
+                            ))}
+                          </select>
+                        </>
+                      ) : versions?.length === 1 ? (
+                        <>
+                          <span className="mr-2">Language:</span>
+                          <span>{versions[0].language}</span>
+                        </>
+                      ) : null}
+                    </li>
+                    <li>Format: {bookInfo?.book_format}</li>
+                    <li>Pages: {bookInfo.pages} pages</li>
+                    <li>ISBN-13: {bookInfo.isbn13}</li>
+                    <li>Item Weight: {bookInfo.weight}</li>
+                    <li>Dimensions: {bookInfo.dimension}</li>
+                    <li>Genre: {bookInfo?.genre}</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-[20px] lg:text-1xl font-semibold mt-6">Description</h3>
+                  <div className="text-[16px] leading-1 text-start font-normal book-info-html pt-2">
+                    <div
+                      className="text-[26px] font-ibm"
+                      dangerouslySetInnerHTML={{
+                        __html: (isExpanded
+                          ? bookInfo.about_book
+                          : `${bookInfo.about_book?.substring(0, maxLength)} `)
+                          ?.replace(/&lt;/g, "<")
+                          .replace(/&gt;/g, ">")
+                          .replace(/&quot;/g, '"')
+                          .replace(/&amp;/g, "&")
+                          .replace(/\\"/g, '"')
+                          .replace(/\\\\/g, "\\")
+                          .replace(/&nbsp;/g, " "),
+                      }}
+                    />
+                    {bookInfo.about_book && bookInfo.about_book.length > maxLength && (
+                      <button
+                        onClick={toggleExpand}
+                        className="text-[#0D1928] underline font-medium inline mt-2"
+                      >
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* About the Book Author */}
+        {activeAuthorDetails &&
+          activeAuthorDetails.author_name !== "Bluone Ink" &&
+          Array.isArray(bookInfo.authors) &&
+          bookInfo.authors.length > 0 && (
+            <section
+              id="about-author"
+              className="container mx-auto text-center py-10 mt-20 pt-0 p-0 lg:w-[70%] lg:mx-auto"
+            >
+              <div className="about-author author-details-container mx-auto p-10 pt-5 rounded-2xl w-full lg:w-[85%] bg-[#FF81001A]">
+                <div className="curve_img">
+                  <Image src={CurveTop} alt="Curve Top" />
+                </div>
+
+                <div className="flex justify-center space-x-2 lg:space-x-4 mb-2">
+                  {bookInfo.authors.map((author, index) => (
+                    <div
+                      key={author?.id ?? author?.authslug ?? index}
+                      className={`cursor-pointer z-[10] ${activeAuthorDetails?.id === author.id
+                        ? "border-[#FF8100] border-4 rounded-full"
+                        : "opacity-80 grayscale"
+                        }`}
+                      onClick={() => {
+                        setActiveAuthorDetails(author);
+                        setIsAuthExpanded(false);
+                      }}
+                    >
+                      <Image
+                        src={author.image || authorimgurl}
+                        alt={author.author_name}
+                        width={150}
+                        height={150}
+                        className="rounded-full w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] object-cover transition duration-200"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="lg:p-8 pt-10 mx-auto">
+                  <div className="relative z-[10]">
+                    <h3 className="font-medium text-3xl mb-4">
+                      {activeAuthorDetails?.author_name}
+                    </h3>
+
+                    <p className="text-gray-700 text-start mb-4 text-lg leading-relaxed">
+                      {isAuthExpanded
+                        ? activeAuthorDetails?.authorDescription ||
+                        "Description not available."
+                        : `${activeAuthorDetails?.authorDescription?.substring(0, 600) || ""}`}
+                      {activeAuthorDetails?.authorDescription &&
+                        activeAuthorDetails.authorDescription.length > 600 && (
+                          <button
+                            onClick={() => setIsAuthExpanded(!isAuthExpanded)}
+                            className="text-[#0D1928] underline font-medium ml-2"
+                          >
+                            {isAuthExpanded ? "Read Less" : "Read More"}
                           </button>
                         )}
-                      </p>
+                    </p>
+
+                    {activeAuthorDetails?.authorSocial &&
+                      Object.keys(activeAuthorDetails.authorSocial).length > 0 && (
+                        <ul className="flex flex-wrap justify-center gap-4 pb-6">
+                          {Object.values(activeAuthorDetails.authorSocial).map((social, index) => {
+                            const s = String(social || "").trim();
+                            if (!s) return null;
+
+                            let Icon = null;
+                            const lower = s.toLowerCase();
+
+                            if (lower.includes("linkedin")) Icon = FaLinkedinIn;
+                            else if (lower.includes("facebook")) Icon = FaFacebookF;
+                            else if (lower.includes("instagram")) Icon = FaInstagram;
+                            else if (lower.includes("youtube")) Icon = FaYoutube;
+                            else if (lower.includes("twitter") || lower.includes("x.com"))
+                              Icon = FaTwitter;
+
+                            if (!Icon) return null;
+
+                            return (
+                              <li key={index}>
+                                <a
+                                  href={s}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-10 h-10 flex items-center justify-center rounded-full border border-[#0D1928] text-[#0D1928] hover:bg-[#0D1928] hover:text-white transition-all duration-300"
+                                >
+                                  <Icon size={18} />
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+
+                    <div className="w-full">
+                      <h6 className="text-[#007DD7] text-md">
+                        {activeAuthorDetails?.authslug && (
+                          <Link
+                            href={`/authors/${activeAuthorDetails.authslug}`}
+                            className="text-blue-500 underline"
+                          >
+                            Visit the Author Page
+                          </Link>
+                        )}
+                      </h6>
                     </div>
                   </div>
                 </div>
               </div>
             </section>
-
-            {/* About the Book Author */}
-            {activeAuthorDetails &&
-              activeAuthorDetails.author_name !== "Bluone Ink" &&
-              Array.isArray(bookInfo.authors) &&
-              bookInfo.authors.length > 0 && (
-                <section
-                  id="about-author"
-                  className="container mx-auto text-center py-10 mt-20 pt-0 p-0 lg:w-[70%] lg:mx-auto"
-                >
-                  <div className="about-author author-details-container mx-auto p-10 pt-5 rounded-2xl w-full lg:w-[85%] bg-[#FF81001A]">
-                    <div className="curve_img">
-                      <Image src={CurveTop} alt="Curve Top" />
-                    </div>
-
-                    <div className="flex justify-center space-x-2 lg:space-x-4 mb-2">
-                      {bookInfo.authors.map((author, index) => (
-                        <div
-                          key={author?.id ?? author?.authslug ?? index}
-                          className={`cursor-pointer z-[10] ${activeAuthorDetails?.id === author.id
-                            ? "border-[#FF8100] border-4 rounded-full"
-                            : "opacity-80 grayscale"
-                            }`}
-                          onClick={() => {
-                            setActiveAuthorDetails(author);
-                            setIsAuthExpanded(false);
-                          }}
-                        >
-                          <Image
-                            src={author.image || authorimgurl}
-                            alt={author.author_name}
-                            width={150}
-                            height={150}
-                            className="rounded-full w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] object-cover transition duration-200"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="lg:p-8 pt-10 mx-auto">
-                      <div className="relative z-[10]">
-                        <h3 className="font-medium text-3xl mb-4">
-                          {activeAuthorDetails?.author_name}
-                        </h3>
-
-                        <p className="text-gray-700 text-start mb-4 text-lg leading-relaxed">
-                          {isAuthExpanded
-                            ? activeAuthorDetails?.authorDescription ||
-                            "Description not available."
-                            : `${activeAuthorDetails?.authorDescription?.substring(0, 600) || ""}`}
-                          {activeAuthorDetails?.authorDescription &&
-                            activeAuthorDetails.authorDescription.length > 600 && (
-                              <button
-                                onClick={() => setIsAuthExpanded(!isAuthExpanded)}
-                                className="text-[#0D1928] underline font-medium ml-2"
-                              >
-                                {isAuthExpanded ? "Read Less" : "Read More"}
-                              </button>
-                            )}
-                        </p>
-
-                        {activeAuthorDetails?.authorSocial &&
-                          Object.keys(activeAuthorDetails.authorSocial).length > 0 && (
-                            <ul className="flex flex-wrap justify-center gap-4 pb-6">
-                              {Object.values(activeAuthorDetails.authorSocial).map((social, index) => {
-                                const s = String(social || "").trim();
-                                if (!s) return null;
-
-                                let Icon = null;
-                                const lower = s.toLowerCase();
-
-                                if (lower.includes("linkedin")) Icon = FaLinkedinIn;
-                                else if (lower.includes("facebook")) Icon = FaFacebookF;
-                                else if (lower.includes("instagram")) Icon = FaInstagram;
-                                else if (lower.includes("youtube")) Icon = FaYoutube;
-                                else if (lower.includes("twitter") || lower.includes("x.com"))
-                                  Icon = FaTwitter;
-
-                                if (!Icon) return null;
-
-                                return (
-                                  <li key={index}>
-                                    <a
-                                      href={s}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="w-10 h-10 flex items-center justify-center rounded-full border border-[#0D1928] text-[#0D1928] hover:bg-[#0D1928] hover:text-white transition-all duration-300"
-                                    >
-                                      <Icon size={18} />
-                                    </a>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          )}
-
-                        <div className="w-full">
-                          <h6 className="text-[#007DD7] text-md">
-                            {activeAuthorDetails?.authslug && (
-                              <Link
-                                href={`/authors/${activeAuthorDetails.authslug}`}
-                                className="text-blue-500 underline"
-                              >
-                                Visit the Author Page
-                              </Link>
-                            )}
-                          </h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              )}
-          </>
-        )}
+          )}
         <section id="endorsements">
           {bookInfo.testimonials && bookInfo.testimonials.length > 0 && (
             <div className="wrapper bg-[#DDF5FF] w-full mt-14">
@@ -631,11 +619,9 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                   {/* LEFT COLUMN */}
                   <div className="w-full lg:w-[65%] p-4 flex items-center">
                     <div className="w-full lg:w-[90%]">
-                      <i>
-                        <p className="text-2xl pb-[15px] md:text-4xl font-medium text-left">
-                          Download a Free Sample Chapter
-                        </p>
-                      </i>
+                      <p className="text-2xl pb-[15px] md:text-4xl font-medium text-left italic">
+                        Get a Free Sample Chapter
+                      </p>
 
                       <iframe
                         data-tally-src="https://tally.so/embed/rjraDL?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
@@ -718,7 +704,7 @@ if (typeof Tally !== "undefined") {
                     return (
                       <div
                         key={`${item.platform}-${item.embedUrl}-${index}`}
-                        className="bg-white rounded-xl shadow-md p-3"
+                        className="bg-white rounded-xl shadow-md inline-flex"
                       >
                         <button
                           type="button"
@@ -773,7 +759,7 @@ if (typeof Tally !== "undefined") {
                   return (
                     <div
                       key={`${item.platform}-${item.embedUrl}-${index}`}
-                      className="bg-white rounded-xl shadow-md p-3"
+                      className="bg-white rounded-xl shadow-md inline-flex"
                     >
                       <button
                         type="button"
@@ -858,7 +844,7 @@ if (typeof Tally !== "undefined") {
             <section id="related-titles" className="container mx-auto px-4">
 
               {/* Heading */}
-              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4">
+              <div className="mx-auto flex w-fit items-center justify-center gap-3 py-6 md:gap-4 pb-3">
                 <Image
                   src={inkdouble1}
                   width={55}
@@ -876,6 +862,14 @@ if (typeof Tally !== "undefined") {
                   alt="inkdouble2"
                   className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
                 />
+              </div>
+
+              <div className="flex items-center justify-center pb-6">
+                <Link href="/resources/events">
+                  <h4 className="text-[#007DD7] text-base underline font-medium">
+                    View All Upcoming Events
+                  </h4>
+                </Link>
               </div>
 
               <div className="flex flex-col items-center gap-6">
@@ -919,14 +913,14 @@ if (typeof Tally !== "undefined") {
                 </div>
 
                 {/* View All Link */}
-                <div className="flex items-center justify-center pb-6">
+                {/* <div className="flex items-center justify-center pb-6">
                   <a
                     href="/resources/events"
                     className="text-[#007DD7] italic text-sm hover:underline"
                   >
                     View All Upcoming Events
                   </a>
-                </div>
+                </div> */}
 
               </div>
             </section>
@@ -938,11 +932,9 @@ if (typeof Tally !== "undefined") {
                   <div className="container mx-auto p-10 pt-10">
                     <div className="flex items-center gap-2 justify-center pb-2">
                       <Image src={inkdouble1} width={55} height={55} alt="inkdouble1" />
-                      <i>
-                        <h3 className="font-medium text-2xl md:text-2xl text-center">
-                          Press Coverage
-                        </h3>
-                      </i>
+                      <h3 className="font-medium text-2xl md:text-2xl text-center italic">
+                        Press Coverage
+                      </h3>
                       <Image src={inkdouble2} width={55} height={55} alt="inkdouble2" />
                     </div>
                     <div
@@ -962,7 +954,7 @@ if (typeof Tally !== "undefined") {
               )}
             </section>
 
-            
+
           </>
         )}
 

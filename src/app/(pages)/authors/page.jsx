@@ -11,7 +11,7 @@ export default async function Page() {
   });
 
   const res = await fetch(`${AUTHORS_API}?${params.toString()}`, {
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
 
   let initialAuthors = [];

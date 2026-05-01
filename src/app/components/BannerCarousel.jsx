@@ -66,7 +66,7 @@ export default function BannerCarousel({ images = [] }) {
             const slideKey = `${slide.image}-${i}`;
 
             const imageElement = (
-              <div className="relative w-full h-[450px] lg:h-[550px]">
+              <div className="relative w-full h-[450px] lg:h-[480px]">
                <Image
                   src={slide.image}
                   alt={`Banner ${i + 1}`}

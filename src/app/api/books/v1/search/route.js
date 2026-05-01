@@ -39,7 +39,7 @@ export async function GET(request) {
   const upstreamUrl = `${portalBaseUrl}/api/v1/public/books/search?${upstreamParams.toString()}`;
 
   const upstreamResponse = await fetch(upstreamUrl, {
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
 
   const upstreamContentType = upstreamResponse.headers.get("content-type") || "";

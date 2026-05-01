@@ -10,7 +10,7 @@ const BASE_URL1 = `${getPortalBaseUrl()}/api/v1/public/authors`;
  */
 export async function fetchAuthors() {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(BASE_URL, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch authors: ${response.statusText}`);
@@ -49,7 +49,7 @@ export async function fetchAuthorsWithSpotlight() {
  */
 export async function fetchAuthorBySlug(slug) {
   try {
-    const response = await fetch(`${BASE_URL}/${slug}`);
+    const response = await fetch(`${BASE_URL}/${slug}`, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch author: ${response.statusText}`);
@@ -67,7 +67,7 @@ export async function fetchAuthorsBySlugs(slugs) {
   try {
     const slugString = Array.isArray(slugs) ? slugs.join(",") : slugs;
 
-    const response = await fetch(`${BASE_URL1}?slugs=${slugString}`);
+    const response = await fetch(`${BASE_URL1}?slugs=${slugString}`, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch authors: ${response.statusText}`);
