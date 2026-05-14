@@ -52,7 +52,7 @@ const iqbalBooks = [
 
 ];
 
-export default function AuthorClient({ authorInfo, hasSpotlights }) {
+export default function AuthorClient({ authorInfo }) {
   const isSpecialAuthor1 =
     authorInfo?.author_name?.trim() ===
     "Iqbal Chand Malhotra";
@@ -301,8 +301,8 @@ export default function AuthorClient({ authorInfo, hasSpotlights }) {
           </div>
         </div>
       </div>
-
-      <Spotlight hasSpotlights={hasSpotlights} />
+            
+      <Spotlight authorSlug={authorInfo.authslug?.replace(/-\d{13}$/, '') || authorInfo.authslug} />
     </main>
   );
 }

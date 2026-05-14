@@ -147,20 +147,21 @@ export default function BookDiscovery({ booksByCategory = {} }) {
                           a.name ||
                           `author-${bookKey}-${index}`;
                         return (
-                        <span key={authorKey}>
-                          {a.slug ? (
-                            <Link
-                              href={`/authors/${a.slug}`}
-                              className="hover:underline font-medium hover:text-blue-600"
-                            >
-                              {a.name}
-                            </Link>
-                          ) : (
-                            <span>{a.name}</span>
-                          )}
-                          {index < authors.length - 1 && ", "}
-                        </span>
-                      )})}
+                          <span key={authorKey}>
+                            {a.slug ? (
+                              <Link
+                                href={`/authors/${a.slug}`}
+                                className="hover:underline font-medium hover:text-blue-600"
+                              >
+                                {a.name}
+                              </Link>
+                            ) : (
+                              <span>{a.name}</span>
+                            )}
+                            {index < authors.length - 1 && ", "}
+                          </span>
+                        );
+                      })}
                     </p>
                   )}
                 </div>

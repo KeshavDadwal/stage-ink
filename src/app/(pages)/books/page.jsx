@@ -105,6 +105,7 @@ export default async function Page({ searchParams }) {
           thumbnailUrl: b.thumbnailUrl,
           author: b.author ? { author_name: b.author.name, name: b.author.name } : null,
           authorNames: b.author?.name ?? "",
+          isCart: b.isCart,
         })),
         totalPages:
           data.totalPages ?? (Math.ceil((data.total || 0) / PAGE_SIZE) || 1),

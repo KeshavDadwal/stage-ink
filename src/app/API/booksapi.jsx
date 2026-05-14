@@ -222,7 +222,8 @@ export function processBookData(book) {
     })), // Add all authors (author + writers)
     authorNames: allAuthorNames, // Add combined author names
     category: book.category?.name,
-    genre: book.genre?.name
+    genre: book.genre?.name,
+    isCart: book.isCart
   };
 }
 

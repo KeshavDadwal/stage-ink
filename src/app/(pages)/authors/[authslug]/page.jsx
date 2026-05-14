@@ -14,19 +14,19 @@ async function fetchAuthorBySlug(authslug) {
 
   return data;
 }
-async function fetchSpotlightsByAuthor(slug) {
-  try {
-    const res = await fetch(
-      `${getPortalBaseUrl()}/api/public/spotlights?authorSlug=${slug}&isActive=true`,
-      { cache: "no-store" }
-    );
+// async function fetchSpotlightsByAuthor(slug) {
+//   try {
+//     const res = await fetch(
+//       `${getPortalBaseUrl()}/api/public/spotlights?authorSlug=${slug}&isActive=true`,
+//       { cache: "no-store" }
+//     );
 
-    if (!res.ok) return [];
-    return await res.json();
-  } catch {
-    return [];
-  }
-}
+//     if (!res.ok) return [];
+//     return await res.json();
+//   } catch {
+//     return [];
+//   }
+// }
 
 function parseSocialMedia(socialMedia) {
   if (!socialMedia) return [];
@@ -69,7 +69,7 @@ export default async function Page({ params }) {
   if (!data) {
     return <div>Author not found.</div>;
   }
-  const spotlights = await fetchSpotlightsByAuthor(authslug);
+  // const spotlights = await fetchSpotlightsByAuthor(authslug);
 
   const authorInfo = {
     id: data.id,
@@ -86,6 +86,6 @@ export default async function Page({ params }) {
 
   return <AuthorClient 
   authorInfo={authorInfo}
-  hasSpotlights={spotlights.length > 0} 
+  // hasSpotlights={spotlights.length > 0} 
   />;
 }

@@ -9,10 +9,9 @@ import CurveTop from "@/app/assests/image/aboutauthorbg.png";
 import BooksCards from "../BooksCards";
 import ScriptLoader from "@/app/ScriptLoader";
 import ShareButtons from "@/app/components/ImagePreviewSection";
-import Loader from "@/app/components/Loader";
 import Spotlight from "@/app/components/Spotlight";
-import Catalog from "../../../assests/image/ink_catalog_cover_2026.webp";
 import SliderBook from "@/app/components/SliderBook";
+import Script from "next/script";
 import {
   FaLinkedinIn,
   FaFacebookF,
@@ -20,7 +19,9 @@ import {
   FaYoutube,
   FaTwitter,
 } from "react-icons/fa";
+import { useCart } from "@/context/CartContext";
 export default function BookPageClient({ bookInfo, relatedBooks, versions, slug }) {
+  const { addToCart } = useCart();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -209,6 +210,17 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
 
   return (
     <>
+    {isSpecialBook && (
+  <Script id="clarity-script" strategy="afterInteractive">
+    {`
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "wma5t6bbma");
+    `}
+  </Script>
+)}
       <main id="top" suppressHydrationWarning>
         <ScriptLoader />
         <section className="relative z-[111] bg-white">
@@ -342,15 +354,51 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                   <p className="text-xl font-semibold font-barlow mt-2">₹{bookInfo.price}</p>
                 </div>
 
-                {/* Show Buy Now button only if NOT special book */}
-                {!isSpecialBook && (
-                  <button
-                    className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow mb-4"
-                    onClick={() => setShowButtons(!showButtons)}
-                  >
-                    Buy Now
-                  </button>
-                )}
+                {/* Buy Now and Add to Cart Buttons */}
+                <div className="flex flex-wrap gap-4 mb-4">
+                  {!isSpecialBook && (
+                    <button
+                      className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow"
+                      onClick={() => setShowButtons(!showButtons)}
+                    >
+                      Buy Now
+                    </button>
+                  )}
+
+                  {bookInfo.isCart && (
+                    <button
+                      className="bg-[#241B6D] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors disabled:opacity-50"
+                      onClick={async (e) => {
+                        console.log("BookPageClient AddToCart - bookInfo:", bookInfo);
+                        const btn = e.currentTarget;
+                        const originalText = btn.innerText;
+                        try {
+                          btn.disabled = true;
+                          btn.innerText = "Adding...";
+                          await addToCart(bookInfo.id);
+                          btn.innerText = "Added!";
+                          btn.classList.add("bg-green-600");
+                          setTimeout(() => {
+                            btn.innerText = originalText;
+                            btn.disabled = false;
+                            btn.classList.remove("bg-green-600");
+                          }, 2000);
+                        } catch (error) {
+                          console.error("Add to cart failed:", error);
+                          btn.innerText = "Error!";
+                          btn.classList.add("bg-red-600");
+                          setTimeout(() => {
+                            btn.innerText = originalText;
+                            btn.disabled = false;
+                            btn.classList.remove("bg-red-600");
+                          }, 2000);
+                        }
+                      }}
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
 
                 {/* Show links:
     - Always for special book
@@ -853,7 +901,7 @@ if (typeof Tally !== "undefined") {
                   className="h-10 w-10 shrink-0 md:h-[55px] md:w-[55px]"
                 />
                 <h3 className="text-center text-xl font-semibold tracking-wide text-[#111] md:text-2xl">
-                  Upcoming Events
+                  Events
                 </h3>
                 <Image
                   src={inkdouble2}
@@ -867,7 +915,7 @@ if (typeof Tally !== "undefined") {
               <div className="flex items-center justify-center pb-6">
                 <Link href="/resources/events">
                   <h4 className="text-[#007DD7] text-base underline font-medium">
-                    View All Upcoming Events
+                    View All Events
                   </h4>
                 </Link>
               </div>

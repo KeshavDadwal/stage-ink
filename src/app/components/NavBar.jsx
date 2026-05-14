@@ -7,10 +7,12 @@ import navbarLogo from "../assests/image/navbarLogo.png";
 import { IoCloseSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaChevronDown } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
+import { useCart } from "@/context/CartContext";
 
 function NavBar({ categoryCounts = {} }) {
+  const { cartCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const totalBooks = categoryCounts || {};
@@ -114,7 +116,15 @@ function NavBar({ categoryCounts = {} }) {
                 />
               </Link>
 
-              <div className="flex items-center gap-2 ml-3">
+              <div className="flex items-center gap-3 ml-3 flex-1">
+                <Link href="/cart" className="relative text-white text-2xl mr-1">
+                  <FiShoppingCart />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-[#FFDE7C] text-[#241b6d] text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
                 <div className="relative flex-1">
                   <input
                     type="text"
@@ -328,7 +338,15 @@ function NavBar({ categoryCounts = {} }) {
           </div>
 
           <div className="md:col-span-2">
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center justify-end gap-6">
+              <Link href="/cart" className="relative text-white text-2xl hover:text-[#FFDE7C] transition-colors">
+                <FiShoppingCart />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-[#FFDE7C] text-[#241b6d] text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
               <div className="relative w-[220px]">
                 <input
                   type="text"
