@@ -52,11 +52,11 @@ const nextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: "camera=(self), microphone=(self), geolocation=(self)",
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:3000 https://dashboard.bluone.ink https://www.bluone.ink http://204.236.201.166:3000;",
+            value: "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:3000 https://dashboard.bluone.ink https://www.bluone.ink https://staging-dashboard.bluone.ink/ https://lumberjack.razorpay.com https://api.razorpay.com https://checkout.razorpay.com;",
           },
         ],
       },
