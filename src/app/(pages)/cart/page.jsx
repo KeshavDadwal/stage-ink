@@ -71,6 +71,26 @@ export default function CartPage() {
     return (applicableSubtotal * couponData.percentage) / 100;
   }, [couponData, cartItems]);
 
+  const getItemDiscountInfo = (item) => {
+    if (!couponData) return null;
+
+    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
+    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+
+    const bookId = Number(item.book.id);
+    const authorId = Number(item.book.authorId);
+
+    const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(bookId);
+    const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(authorId);
+
+    if (bookApplies && authorApplies) {
+      const originalPrice = parseFloat(item.book.price) || 0;
+      const discountedPrice = (originalPrice * (100 - couponData.percentage)) / 100;
+      return { originalPrice, discountedPrice, percentage: couponData.percentage };
+    }
+    return null;
+  };
+
   const shipping = 0; // Free shipping for now
   const total = subtotal - discountAmount + shipping;
 
@@ -214,7 +234,14 @@ export default function CartPage() {
 
                   <div className="col-span-1 md:col-span-2 text-center">
                     <span className="md:hidden font-bold mr-2 text-gray-500">Price:</span>
-                    <span className="font-medium text-gray-900">₹{item.book.price}</span>
+                    {getItemDiscountInfo(item) ? (
+                      <div className="flex flex-col items-center">
+                        <span className="font-bold text-[#FF8100]">₹{getItemDiscountInfo(item).discountedPrice.toFixed(2)}</span>
+                        <span className="text-xs text-gray-400 line-through">₹{item.book.price}</span>
+                      </div>
+                    ) : (
+                      <span className="font-medium text-gray-900">₹{item.book.price}</span>
+                    )}
                   </div>
 
                   <div className="col-span-1 md:col-span-2 flex justify-center">
@@ -238,7 +265,11 @@ export default function CartPage() {
 
                   <div className="col-span-1 md:col-span-2 text-right">
                     <span className="md:hidden font-bold mr-2 text-gray-500">Total:</span>
-                    <span className="font-bold text-[#241B6D] text-lg">₹{item.book.price * item.quantity}</span>
+                    {getItemDiscountInfo(item) ? (
+                      <span className="font-bold text-[#241B6D] text-lg">₹{(getItemDiscountInfo(item).discountedPrice * item.quantity).toFixed(2)}</span>
+                    ) : (
+                      <span className="font-bold text-[#241B6D] text-lg">₹{item.book.price * item.quantity}</span>
+                    )}
                   </div>
                 </div>
               ))}
