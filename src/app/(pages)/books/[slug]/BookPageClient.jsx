@@ -21,6 +21,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
+import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 export default function BookPageClient(props) {
   return (
     <Suspense fallback={null}>
@@ -59,13 +60,18 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
       const fetchCoupon = async () => {
         try {
           setFetchingCoupon(true);
-          const response = await fetch(`${process.env.NEXT_PUBLIC_PORTAL_API_URL || 'https://api.bluone.ink'}/api/public/coupons/by-id/${couponId}`);
+          const baseUrl = getPortalBaseUrl();
+          console.log("Fetching coupon for ID:", couponId, "from", baseUrl);
+          const response = await fetch(`${baseUrl}/api/public/coupons/by-id/${couponId}`);
           if (response.ok) {
             const data = await response.json();
+            console.log("Coupon data received:", data);
             setCouponData(data);
             // Save coupon code to session for cart (backend still expects code for validation)
             sessionStorage.setItem("applied_coupon", data.code);
             sessionStorage.setItem("applied_coupon_id", couponId);
+          } else {
+            console.error("Failed to fetch coupon:", response.status);
           }
         } catch (error) {
           console.error("Error fetching coupon:", error);
@@ -87,8 +93,13 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
     const bookId = Number(bookInfo.id);
     const authorId = Number(bookInfo.author?.id);
 
+    console.log("Checking discount for Book ID:", bookId, "Author ID:", authorId);
+    console.log("Coupon Book IDs:", couponBookIds, "Author IDs:", couponAuthorIds);
+
     const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(bookId);
     const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(authorId);
+
+    console.log("Book applies:", bookApplies, "Author applies:", authorApplies);
 
     if (bookApplies && authorApplies) {
       return couponData.percentage;

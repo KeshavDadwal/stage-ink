@@ -7,6 +7,7 @@ import { FiTrash2, FiMinus, FiPlus, FiArrowLeft, FiShoppingBag } from "react-ico
 import { useCart } from "@/context/CartContext";
 import Script from "next/script";
 import { createPaymentOrder, verifyPayment } from "@/app/API/cartApi";
+import { getPortalBaseUrl } from "@/app/API/portalBaseUrl";
 
 export default function CartPage() {
   const { cartItems, loading, cartCount, updateQuantity, removeFromCart, clearCart, refreshCart } = useCart();
@@ -38,7 +39,8 @@ export default function CartPage() {
 
   const fetchCouponDetails = async (code) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_PORTAL_API_URL || 'https://api.bluone.ink'}/api/public/coupons/${code}`);
+      const baseUrl = getPortalBaseUrl();
+      const response = await fetch(`${baseUrl}/api/public/coupons/${code}`);
       if (response.ok) {
         const data = await response.json();
         setCouponData(data);
