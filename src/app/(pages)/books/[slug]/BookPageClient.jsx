@@ -340,7 +340,9 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                     })}
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    {discountPercentage > 0 ? (
+                    {fetchingCoupon ? (
+                      <p className="text-sm text-gray-500 animate-pulse">Validating coupon...</p>
+                    ) : discountPercentage > 0 ? (
                       <>
                         <p className="text-xl font-bold text-[#FF8100]">₹{discountedPrice.toFixed(2)}</p>
                         <p className="text-sm text-gray-500 line-through mt-1">₹{bookInfo.price}</p>
@@ -349,7 +351,12 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                         </span>
                       </>
                     ) : (
-                      <p className="text-xl font-bold">₹{bookInfo.price}</p>
+                      <>
+                        <p className="text-xl font-bold">₹{bookInfo.price}</p>
+                        {couponId && !fetchingCoupon && (
+                          <span className="text-[10px] text-red-500 ml-2">(Coupon not applicable)</span>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -440,7 +447,9 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                     })}
                   </div>
                   <div className="flex items-center gap-3 mt-2">
-                    {discountPercentage > 0 ? (
+                    {fetchingCoupon ? (
+                      <p className="text-lg text-gray-500 animate-pulse font-barlow">Validating coupon...</p>
+                    ) : discountPercentage > 0 ? (
                       <>
                         <p className="text-2xl font-semibold font-barlow text-[#FF8100]">₹{discountedPrice.toFixed(2)}</p>
                         <p className="text-lg text-gray-500 line-through font-barlow mt-1">₹{bookInfo.price}</p>
@@ -449,7 +458,12 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                         </span>
                       </>
                     ) : (
-                      <p className="text-2xl font-semibold font-barlow">₹{bookInfo.price}</p>
+                      <>
+                        <p className="text-2xl font-semibold font-barlow">₹{bookInfo.price}</p>
+                        {couponId && !fetchingCoupon && (
+                          <span className="text-sm text-red-500 font-barlow ml-2">(Coupon not applicable)</span>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
