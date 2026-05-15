@@ -55,18 +55,35 @@ export default function CartPage() {
   const discountAmount = React.useMemo(() => {
     if (!couponData || !cartItems.length) return 0;
 
-    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
-    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+    const couponBookIds = (couponData.couponBooks || []).map(cb => Number(cb.bookId));
+    const couponAuthorIds = (couponData.couponAuthors || []).map(ca => Number(ca.authorId));
 
     let applicableSubtotal = 0;
-    for (const item of cartItems) {
-      const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(item.book.id);
-      const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(item.book.authorId);
+    
+    cartItems.forEach(item => {
+      const bookId = Number(item.book.id);
+      const authorId = Number(item.book.authorId);
 
-      if (bookApplies && authorApplies) {
-        applicableSubtotal += (item.book.price * item.quantity);
+      const hasBookRestrictions = couponBookIds.length > 0;
+      const hasAuthorRestrictions = couponAuthorIds.length > 0;
+      
+      const bookMatches = bookId && couponBookIds.includes(bookId);
+      const authorMatches = authorId && couponAuthorIds.includes(authorId);
+
+      let isApplicable = false;
+      if (!hasBookRestrictions && !hasAuthorRestrictions) {
+        isApplicable = true;
+      } else if (hasBookRestrictions && bookMatches) {
+        isApplicable = true;
+      } else if (hasAuthorRestrictions && authorMatches) {
+        isApplicable = true;
       }
-    }
+
+      if (isApplicable) {
+        const price = parseFloat(item.book.price) || 0;
+        applicableSubtotal += (price * item.quantity);
+      }
+    });
 
     return (applicableSubtotal * couponData.percentage) / 100;
   }, [couponData, cartItems]);
@@ -74,16 +91,28 @@ export default function CartPage() {
   const getItemDiscountInfo = (item) => {
     if (!couponData) return null;
 
-    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
-    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+    const couponBookIds = (couponData.couponBooks || []).map(cb => Number(cb.bookId));
+    const couponAuthorIds = (couponData.couponAuthors || []).map(ca => Number(ca.authorId));
 
     const bookId = Number(item.book.id);
     const authorId = Number(item.book.authorId);
 
-    const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(bookId);
-    const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(authorId);
+    const hasBookRestrictions = couponBookIds.length > 0;
+    const hasAuthorRestrictions = couponAuthorIds.length > 0;
+    
+    const bookMatches = bookId && couponBookIds.includes(bookId);
+    const authorMatches = authorId && couponAuthorIds.includes(authorId);
 
-    if (bookApplies && authorApplies) {
+    let isApplicable = false;
+    if (!hasBookRestrictions && !hasAuthorRestrictions) {
+      isApplicable = true;
+    } else if (hasBookRestrictions && bookMatches) {
+      isApplicable = true;
+    } else if (hasAuthorRestrictions && authorMatches) {
+      isApplicable = true;
+    }
+
+    if (isApplicable) {
       const originalPrice = parseFloat(item.book.price) || 0;
       const discountedPrice = (originalPrice * (100 - couponData.percentage)) / 100;
       return { originalPrice, discountedPrice, percentage: couponData.percentage };
