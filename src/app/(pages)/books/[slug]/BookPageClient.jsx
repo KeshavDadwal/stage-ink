@@ -32,7 +32,7 @@ export default function BookPageClient(props) {
 
 function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
   const searchParams = useSearchParams();
-  const couponId = searchParams.get("couponId");
+  const couponId = searchParams.get("couponId") || searchParams.get("couponid");
 
   const [couponData, setCouponData] = useState(null);
   const [fetchingCoupon, setFetchingCoupon] = useState(false);
@@ -87,21 +87,48 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
     if (!couponData) return 0;
     
     // Check if coupon applies to this book
-    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
-    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+    // Extract IDs and ensure they are numbers
+    const couponBookIds = (couponData.couponBooks || []).map(cb => Number(cb.bookId));
+    const couponAuthorIds = (couponData.couponAuthors || []).map(ca => Number(ca.authorId));
 
-    const bookId = Number(bookInfo.id);
-    const authorId = Number(bookInfo.author?.id);
+    const currentBookId = bookInfo.id ? Number(bookInfo.id) : null;
+    // Try to find author ID from various possible locations in bookInfo
+    const currentAuthorId = bookInfo.author?.id ? Number(bookInfo.author.id) : 
+                          (bookInfo.authors?.[0]?.id ? Number(bookInfo.authors[0].id) : null);
 
-    console.log("Checking discount for Book ID:", bookId, "Author ID:", authorId);
-    console.log("Coupon Book IDs:", couponBookIds, "Author IDs:", couponAuthorIds);
+    console.log("--- Coupon Debug ---");
+    console.log("Coupon Code:", couponData.code);
+    console.log("Current Book ID:", currentBookId);
+    console.log("Current Author ID:", currentAuthorId);
+    console.log("Coupon Applicable Book IDs:", couponBookIds);
+    console.log("Coupon Applicable Author IDs:", couponAuthorIds);
 
-    const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(bookId);
-    const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(authorId);
+    // Logic:
+    // 1. If coupon has specific books, check if current book is one of them.
+    // 2. If coupon has specific authors, check if current book's author is one of them.
+    // 3. A coupon is applicable if it's general (no books/authors) 
+    //    OR if it matches the book OR if it matches the author.
+    
+    const hasBookRestrictions = couponBookIds.length > 0;
+    const hasAuthorRestrictions = couponAuthorIds.length > 0;
+    
+    const bookMatches = currentBookId && couponBookIds.includes(currentBookId);
+    const authorMatches = currentAuthorId && couponAuthorIds.includes(currentAuthorId);
 
-    console.log("Book applies:", bookApplies, "Author applies:", authorApplies);
+    let isApplicable = false;
 
-    if (bookApplies && authorApplies) {
+    if (!hasBookRestrictions && !hasAuthorRestrictions) {
+      isApplicable = true; // General coupon
+    } else if (hasBookRestrictions && bookMatches) {
+      isApplicable = true; // Specifically for this book
+    } else if (hasAuthorRestrictions && authorMatches) {
+      isApplicable = true; // For all books of this author
+    }
+
+    console.log("Is Applicable:", isApplicable);
+    console.log("--------------------");
+
+    if (isApplicable) {
       return couponData.percentage;
     }
     return 0;
