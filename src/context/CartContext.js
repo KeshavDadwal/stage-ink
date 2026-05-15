@@ -26,7 +26,6 @@ export function CartProvider({ children }) {
   }, []);
 
   const addToCart = async (bookId, quantity = 1) => {
-    console.log("Adding to cart - bookId:", bookId, "type:", typeof bookId);
     try {
       await apiAddToCart(bookId, quantity);
       await refreshCart();

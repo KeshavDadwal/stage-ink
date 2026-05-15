@@ -11,7 +11,7 @@ const API_BASE_URL = `${getPortalBaseUrl()}/api/v1/public/cart`;
  */
 export const getSessionId = () => {
   if (typeof window === "undefined") return "";
-  
+
   let sessionId = localStorage.getItem("bluone_cart_session");
   if (!sessionId) {
     sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -28,11 +28,11 @@ export async function fetchCartItems() {
   const sessionId = getSessionId();
   try {
     const response = await fetch(`${API_BASE_URL}?sessionId=${sessionId}`, { cache: "no-store" });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch cart: ${response.status} ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error fetching cart:", error);
@@ -60,15 +60,14 @@ export async function addToCart(bookId, quantity = 1) {
         sessionId,
       }),
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to add to cart: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
-    console.error("Error adding to cart:", error);
     throw error;
   }
 }
@@ -91,12 +90,12 @@ export async function updateCartItemQuantity(cartItemId, quantity) {
         quantity,
       }),
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to update cart: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error updating cart:", error);
@@ -114,12 +113,12 @@ export async function removeFromCart(cartItemId) {
     const response = await fetch(`${API_BASE_URL}?cartItemId=${cartItemId}`, {
       method: "DELETE",
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to remove from cart: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error removing from cart:", error);
@@ -137,12 +136,12 @@ export async function clearCart() {
     const response = await fetch(`${API_BASE_URL}?sessionId=${sessionId}&clear=true`, {
       method: "DELETE",
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to clear cart: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error clearing cart:", error);
@@ -156,7 +155,7 @@ export async function clearCart() {
  * @param {Object|null} shippingData - The shipping details (optional)
  * @returns {Promise<Object>} - Promise resolving to the order details
  */
-export async function createPaymentOrder(userId = null, shippingData = null) {
+export async function createPaymentOrder(userId = null, shippingData = null, couponCode = null) {
   const sessionId = getSessionId();
   try {
     const response = await fetch(`${getPortalBaseUrl()}/api/v1/public/payment/order`, {
@@ -168,14 +167,15 @@ export async function createPaymentOrder(userId = null, shippingData = null) {
         userId,
         sessionId,
         ...shippingData,
+        couponCode,
       }),
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to create payment order: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error creating payment order:", error);
@@ -203,12 +203,12 @@ export async function verifyPayment(paymentData, userId = null) {
         sessionId,
       }),
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `Failed to verify payment: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error verifying payment:", error);

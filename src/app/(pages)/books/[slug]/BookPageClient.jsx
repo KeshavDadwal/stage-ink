@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
@@ -20,7 +21,21 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
-export default function BookPageClient({ bookInfo, relatedBooks, versions, slug }) {
+export default function BookPageClient(props) {
+  return (
+    <Suspense fallback={null}>
+      <BookPageClientContent {...props} />
+    </Suspense>
+  );
+}
+
+function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
+  const searchParams = useSearchParams();
+  const couponId = searchParams.get("couponId");
+
+  const [couponData, setCouponData] = useState(null);
+  const [fetchingCoupon, setFetchingCoupon] = useState(false);
+
   const { addToCart } = useCart();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -38,6 +53,56 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (couponId) {
+      const fetchCoupon = async () => {
+        try {
+          setFetchingCoupon(true);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_PORTAL_API_URL || 'https://api.bluone.ink'}/api/public/coupons/by-id/${couponId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setCouponData(data);
+            // Save coupon code to session for cart (backend still expects code for validation)
+            sessionStorage.setItem("applied_coupon", data.code);
+            sessionStorage.setItem("applied_coupon_id", couponId);
+          }
+        } catch (error) {
+          console.error("Error fetching coupon:", error);
+        } finally {
+          setFetchingCoupon(false);
+        }
+      };
+      fetchCoupon();
+    }
+  }, [couponId]);
+
+  const discountPercentage = useMemo(() => {
+    if (!couponData) return 0;
+    
+    // Check if coupon applies to this book
+    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
+    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+
+    const bookId = Number(bookInfo.id);
+    const authorId = Number(bookInfo.author?.id);
+
+    const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(bookId);
+    const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(authorId);
+
+    if (bookApplies && authorApplies) {
+      return couponData.percentage;
+    }
+    return 0;
+  }, [couponData, bookInfo]);
+
+  const discountedPrice = useMemo(() => {
+    const originalPrice = parseFloat(bookInfo.price) || 0;
+    if (discountPercentage > 0) {
+      return (originalPrice * (100 - discountPercentage)) / 100;
+    }
+    return originalPrice;
+  }, [bookInfo.price, discountPercentage]);
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll("section[id]");
@@ -263,7 +328,19 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                       );
                     })}
                   </div>
-                  <p className="text-xl font-bold mt-2">₹{bookInfo.price}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    {discountPercentage > 0 ? (
+                      <>
+                        <p className="text-xl font-bold text-[#FF8100]">₹{discountedPrice.toFixed(2)}</p>
+                        <p className="text-sm text-gray-500 line-through mt-1">₹{bookInfo.price}</p>
+                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">
+                          {discountPercentage}% OFF
+                        </span>
+                      </>
+                    ) : (
+                      <p className="text-xl font-bold">₹{bookInfo.price}</p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="order-2 lg:order-1 flex lg:flex-col gap-4 overflow-x-auto">
@@ -351,7 +428,19 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                       );
                     })}
                   </div>
-                  <p className="text-xl font-semibold font-barlow mt-2">₹{bookInfo.price}</p>
+                  <div className="flex items-center gap-3 mt-2">
+                    {discountPercentage > 0 ? (
+                      <>
+                        <p className="text-2xl font-semibold font-barlow text-[#FF8100]">₹{discountedPrice.toFixed(2)}</p>
+                        <p className="text-lg text-gray-500 line-through font-barlow mt-1">₹{bookInfo.price}</p>
+                        <span className="text-sm bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold font-barlow">
+                          {discountPercentage}% OFF
+                        </span>
+                      </>
+                    ) : (
+                      <p className="text-2xl font-semibold font-barlow">₹{bookInfo.price}</p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Buy Now and Add to Cart Buttons */}
@@ -369,7 +458,6 @@ export default function BookPageClient({ bookInfo, relatedBooks, versions, slug 
                     <button
                       className="bg-[#241B6D] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors disabled:opacity-50"
                       onClick={async (e) => {
-                        console.log("BookPageClient AddToCart - bookInfo:", bookInfo);
                         const btn = e.currentTarget;
                         const originalText = btn.innerText;
                         try {

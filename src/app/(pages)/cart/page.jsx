@@ -1,17 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiTrash2, FiMinus, FiPlus, FiArrowLeft, FiShoppingBag } from "react-icons/fi";
 import { useCart } from "@/context/CartContext";
 import Script from "next/script";
 import { createPaymentOrder, verifyPayment } from "@/app/API/cartApi";
-import { useState } from "react";
 
 export default function CartPage() {
   const { cartItems, loading, cartCount, updateQuantity, removeFromCart, clearCart, refreshCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponData, setCouponData] = useState(null);
   const [shippingData, setShippingData] = useState({
     customerName: "",
     customerEmail: "",
@@ -27,9 +28,49 @@ export default function CartPage() {
     setShippingData(prev => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    const coupon = sessionStorage.getItem("applied_coupon");
+    if (coupon) {
+      setAppliedCoupon(coupon);
+      fetchCouponDetails(coupon);
+    }
+  }, []);
+
+  const fetchCouponDetails = async (code) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_PORTAL_API_URL || 'https://api.bluone.ink'}/api/public/coupons/${code}`);
+      if (response.ok) {
+        const data = await response.json();
+        setCouponData(data);
+      }
+    } catch (error) {
+      console.error("Error fetching coupon for cart:", error);
+    }
+  };
+
   const subtotal = cartItems.reduce((total, item) => total + (item.book.price * item.quantity), 0);
+  
+  const discountAmount = React.useMemo(() => {
+    if (!couponData || !cartItems.length) return 0;
+
+    const couponBookIds = couponData.couponBooks?.map(cb => cb.bookId) || [];
+    const couponAuthorIds = couponData.couponAuthors?.map(ca => ca.authorId) || [];
+
+    let applicableSubtotal = 0;
+    for (const item of cartItems) {
+      const bookApplies = couponBookIds.length === 0 || couponBookIds.includes(item.book.id);
+      const authorApplies = couponAuthorIds.length === 0 || couponAuthorIds.includes(item.book.authorId);
+
+      if (bookApplies && authorApplies) {
+        applicableSubtotal += (item.book.price * item.quantity);
+      }
+    }
+
+    return (applicableSubtotal * couponData.percentage) / 100;
+  }, [couponData, cartItems]);
+
   const shipping = 0; // Free shipping for now
-  const total = subtotal + shipping;
+  const total = subtotal - discountAmount + shipping;
 
   const handleCheckout = async () => {
     if (isProcessing) return;
@@ -44,7 +85,7 @@ export default function CartPage() {
       setIsProcessing(true);
       
       // 1. Create order on backend
-      const orderData = await createPaymentOrder(null, shippingData);
+      const orderData = await createPaymentOrder(null, shippingData, appliedCoupon);
       
       // 2. Initialize Razorpay options
       const options = {
@@ -318,6 +359,12 @@ export default function CartPage() {
                 <span>Shipping</span>
                 <span className="font-medium text-green-600">FREE</span>
               </div>
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-green-600 font-medium">
+                  <span>Discount ({couponData?.code})</span>
+                  <span>-₹{discountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="border-t border-gray-100 pt-4 mt-4 flex justify-between items-center">
                 <span className="text-lg font-bold text-[#241B6D]">Total</span>
                 <span className="text-2xl font-black text-[#241B6D]">₹{total}</span>
@@ -331,12 +378,6 @@ export default function CartPage() {
             >
               {isProcessing ? "Processing..." : "Proceed to Checkout"}
             </button>
-            
-            <div className="mt-6 flex justify-center gap-4 opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
-              <Image src="/visa.png" alt="Visa" width={40} height={25} className="h-6 object-contain" />
-              <Image src="/mastercard.png" alt="Mastercard" width={40} height={25} className="h-6 object-contain" />
-              <Image src="/upi.png" alt="UPI" width={40} height={25} className="h-6 object-contain" />
-            </div>
           </div>
         </div>
       </div>
