@@ -121,7 +121,7 @@ export default function CartPage() {
   };
 
   const shipping = 0; // Free shipping for now
-  const total = subtotal - discountAmount + shipping;
+  const total = (subtotal - discountAmount + shipping).toFixed(2);
 
   const handleCheckout = async () => {
     if (isProcessing) return;
