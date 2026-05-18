@@ -33,13 +33,16 @@ export default function BookPageClient(props) {
 function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
   const searchParams = useSearchParams();
   const couponId = searchParams.get("couponId") || searchParams.get("couponid");
+  const couponCode = searchParams.get("couponCode") || searchParams.get("couponcode");
 
   const [couponData, setCouponData] = useState(null);
   const [fetchingCoupon, setFetchingCoupon] = useState(false);
 
+  // ... (other state remains the same)
   const { addToCart } = useCart();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthExpanded, setIsAuthExpanded] = useState(false);
   const [activeAuthorDetails, setActiveAuthorDetails] = useState(
@@ -56,7 +59,31 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
   }, []);
 
   useEffect(() => {
-    if (couponId) {
+    if (couponCode) {
+      const fetchCoupon = async () => {
+        try {
+          setFetchingCoupon(true);
+          const baseUrl = getPortalBaseUrl();
+          console.log("Fetching coupon for code:", couponCode, "from", baseUrl);
+          const response = await fetch(`${baseUrl}/api/public/coupons/${couponCode}`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Coupon data received:", data);
+            setCouponData(data);
+            // Save coupon code to session for cart
+            sessionStorage.setItem("applied_coupon", data.code);
+            sessionStorage.setItem("applied_coupon_id", data.id);
+          } else {
+            console.error("Failed to fetch coupon:", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching coupon:", error);
+        } finally {
+          setFetchingCoupon(false);
+        }
+      };
+      fetchCoupon();
+    } else if (couponId) {
       const fetchCoupon = async () => {
         try {
           setFetchingCoupon(true);
@@ -67,7 +94,7 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
             const data = await response.json();
             console.log("Coupon data received:", data);
             setCouponData(data);
-            // Save coupon code to session for cart (backend still expects code for validation)
+            // Save coupon code to session for cart
             sessionStorage.setItem("applied_coupon", data.code);
             sessionStorage.setItem("applied_coupon_id", couponId);
           } else {
@@ -81,7 +108,7 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
       };
       fetchCoupon();
     }
-  }, [couponId]);
+  }, [couponCode, couponId]);
 
   const discountPercentage = useMemo(() => {
     if (!couponData) return 0;
@@ -499,7 +526,7 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                 <div className="flex flex-wrap gap-4 mb-4">
                   {!isSpecialBook && (
                     <button
-                      className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow"
+                      className="bg-[#007DD7] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow h-[40px]"
                       onClick={() => setShowButtons(!showButtons)}
                     >
                       Buy Now
@@ -507,36 +534,62 @@ function BookPageClientContent({ bookInfo, relatedBooks, versions, slug }) {
                   )}
 
                   {bookInfo.isCart && (
-                    <button
-                      className="bg-[#241B6D] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors disabled:opacity-50"
-                      onClick={async (e) => {
-                        const btn = e.currentTarget;
-                        const originalText = btn.innerText;
-                        try {
-                          btn.disabled = true;
-                          btn.innerText = "Adding...";
-                          await addToCart(bookInfo.id);
-                          btn.innerText = "Added!";
-                          btn.classList.add("bg-green-600");
-                          setTimeout(() => {
-                            btn.innerText = originalText;
-                            btn.disabled = false;
-                            btn.classList.remove("bg-green-600");
-                          }, 2000);
-                        } catch (error) {
-                          console.error("Add to cart failed:", error);
-                          btn.innerText = "Error!";
-                          btn.classList.add("bg-red-600");
-                          setTimeout(() => {
-                            btn.innerText = originalText;
-                            btn.disabled = false;
-                            btn.classList.remove("bg-red-600");
-                          }, 2000);
-                        }
-                      }}
-                    >
-                      Add to Cart
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center border border-[#241B6D] rounded-full h-[40px] overflow-hidden">
+                        <button
+                          className="px-4 bg-white hover:bg-gray-100 text-[#241B6D] font-bold h-full transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setQuantity(Math.max(1, quantity - 1));
+                          }}
+                        >
+                          -
+                        </button>
+                        <span className="px-3 text-[16px] font-bold min-w-[36px] text-center bg-white text-[#241B6D]">{quantity}</span>
+                        <button
+                          className="px-4 bg-white hover:bg-gray-100 text-[#241B6D] font-bold h-full transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setQuantity(quantity + 1);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        className="bg-[#241B6D] text-white rounded-full px-6 py-2 text-sm font-medium font-barlow hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors disabled:opacity-50 h-[40px]"
+                        onClick={async (e) => {
+                          const btn = e.currentTarget;
+                          const originalText = btn.innerText;
+                          try {
+                            btn.disabled = true;
+                            btn.innerText = "Adding...";
+                            await addToCart(bookInfo.id, quantity);
+                            btn.innerText = "Added!";
+                            btn.classList.add("bg-green-600");
+                            setTimeout(() => {
+                              btn.innerText = originalText;
+                              btn.disabled = false;
+                              btn.classList.remove("bg-green-600");
+                              setQuantity(1);
+                            }, 2000);
+                          } catch (error) {
+                            console.error("Add to cart failed:", error);
+                            btn.innerText = "Error!";
+                            btn.classList.add("bg-red-600");
+                            setTimeout(() => {
+                              btn.innerText = originalText;
+                              btn.disabled = false;
+                              btn.classList.remove("bg-red-600");
+                            }, 2000);
+                          }
+                        }}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
                   )}
                 </div>
 

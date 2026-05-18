@@ -209,7 +209,7 @@ export default function CartPage() {
           Looks like you haven't added any books to your cart yet. Explore our collection and find your next great read!
         </p>
         <Link 
-          href="/books" 
+          href="/category" 
           className="inline-flex items-center gap-2 bg-[#241B6D] text-white px-8 py-3 rounded-full font-bold hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors"
         >
           <FiArrowLeft /> Continue Shopping
@@ -306,7 +306,7 @@ export default function CartPage() {
             
             <div className="p-6 bg-gray-50 flex justify-between items-center">
               <Link 
-                href="/books" 
+                href="/category" 
                 className="text-[#241B6D] font-bold flex items-center gap-2 hover:underline"
               >
                 <FiArrowLeft /> Continue Shopping

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
@@ -15,6 +15,7 @@ function BooksCards({
   bookId,
 }) {
   const { addToCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
   const defaultImage =
     "https://via.placeholder.com/250x400.png?text=No+Image+Available";
   return (
@@ -61,9 +62,32 @@ function BooksCards({
 
           {/* Add to Cart Button */}
           {isCart && (
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap gap-2 items-center">
+              <div className="flex items-center border border-[#241B6D] rounded-full h-[36px] overflow-hidden">
+                <button
+                  className="px-3 bg-white hover:bg-gray-100 text-[#241B6D] font-bold h-full transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setQuantity(Math.max(1, quantity - 1));
+                  }}
+                >
+                  -
+                </button>
+                <span className="px-3 text-[14px] font-bold min-w-[32px] text-center bg-white text-[#241B6D]">{quantity}</span>
+                <button
+                  className="px-3 bg-white hover:bg-gray-100 text-[#241B6D] font-bold h-full transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setQuantity(quantity + 1);
+                  }}
+                >
+                  +
+                </button>
+              </div>
               <button
-                className="bg-[#241B6D] text-white text-[12px] font-bold py-2 px-6 rounded-full hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors uppercase tracking-wider w-full md:w-auto disabled:opacity-50"
+                className="bg-[#241B6D] text-white text-[12px] font-bold py-2 px-6 rounded-full hover:bg-[#FFDE7C] hover:text-[#241B6D] transition-colors uppercase tracking-wider flex-1 md:flex-none h-[36px] disabled:opacity-50"
                 onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -76,13 +100,14 @@ function BooksCards({
                   try {
                     btn.disabled = true;
                     btn.innerText = "Adding...";
-                    await addToCart(bookId);
+                    await addToCart(bookId, quantity);
                     btn.innerText = "Added!";
                     btn.classList.add("bg-green-600");
                     setTimeout(() => {
                       btn.innerText = originalText;
                       btn.disabled = false;
                       btn.classList.remove("bg-green-600");
+                      setQuantity(1);
                     }, 2000);
                   } catch (error) {
                     console.error("Add to cart failed:", error);

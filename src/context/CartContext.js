@@ -9,15 +9,15 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const refreshCart = async () => {
+  const refreshCart = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       const items = await fetchCartItems();
       setCartItems(Array.isArray(items) ? items : []);
     } catch (error) {
       console.error("Failed to fetch cart:", error);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
@@ -28,7 +28,7 @@ export function CartProvider({ children }) {
   const addToCart = async (bookId, quantity = 1) => {
     try {
       await apiAddToCart(bookId, quantity);
-      await refreshCart();
+      await refreshCart(false);
     } catch (error) {
       console.error("Failed to add to cart:", error);
       throw error;
@@ -37,30 +37,35 @@ export function CartProvider({ children }) {
 
   const removeFromCart = async (cartItemId) => {
     try {
+      setCartItems(prev => prev.filter(item => item.id !== cartItemId));
       await apiRemoveFromCart(cartItemId);
-      await refreshCart();
+      await refreshCart(false);
     } catch (error) {
       console.error("Failed to remove from cart:", error);
+      await refreshCart(false);
       throw error;
     }
   };
 
   const updateQuantity = async (cartItemId, quantity) => {
     try {
+      setCartItems(prev => prev.map(item => item.id === cartItemId ? { ...item, quantity } : item));
       await apiUpdateQuantity(cartItemId, quantity);
-      await refreshCart();
+      await refreshCart(false);
     } catch (error) {
       console.error("Failed to update quantity:", error);
+      await refreshCart(false);
       throw error;
     }
   };
 
   const clearCart = async () => {
     try {
-      await apiClearCart();
       setCartItems([]);
+      await apiClearCart();
     } catch (error) {
       console.error("Failed to clear cart:", error);
+      await refreshCart(false);
       throw error;
     }
   };
