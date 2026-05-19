@@ -63,7 +63,12 @@ export default function AuthorsClient({
           return;
         }
 
-        setAuthorsList(data.authors || []);
+        // setAuthorsList(data.authors || []);
+        const filteredAuthors = (data.authors || []).filter(
+          (author) => author.name !== "Testing Author"
+        );
+        
+        setAuthorsList(filteredAuthors);
         setTotal(data.total ?? 0);
         setTotalPages(Math.max(1, data.totalPages ?? 1));
       } catch (error) {

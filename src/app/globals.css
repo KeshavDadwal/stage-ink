@@ -107,7 +107,7 @@ html {
 }
 .navmain .navbar .ifont{
   font-family: "IBM Plex Serif";
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
 }
 
@@ -202,8 +202,8 @@ html {
 
 .navbar-item {
   --tw-space-x-reverse: 0;
-    margin-right: calc(4rem * var(--tw-space-x-reverse));
-    margin-left: calc(4rem * calc(1 - var(--tw-space-x-reverse)));
+    margin-right: calc(3.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(3.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .banner-slider {

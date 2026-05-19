@@ -126,9 +126,31 @@ export default function CartPage() {
   const handleCheckout = async () => {
     if (isProcessing) return;
     
-    // Validate shipping data
-    if (!shippingData.customerName || !shippingData.customerEmail || !shippingData.customerPhone || !shippingData.shippingAddress || !shippingData.shippingPincode) {
+    if (
+      !shippingData.customerName ||
+      !shippingData.customerEmail ||
+      !shippingData.customerPhone ||
+      !shippingData.shippingAddress ||
+      !shippingData.shippingPincode ||
+      !shippingData.shippingCity ||
+      !shippingData.shippingState
+    ) {
       alert("Please fill in all required shipping details.");
+      return;
+    }
+    
+    if (shippingData.customerPhone.length !== 10) {
+      alert("Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    if (!/^\d{6}$/.test(shippingData.shippingPincode)) {
+      alert("Pincode must be exactly 6 digits.");
+      return;
+    }
+    
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shippingData.customerEmail)) {
+      alert("Please enter a valid email address.");
       return;
     }
 
@@ -340,33 +362,60 @@ export default function CartPage() {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700">Email Address *</label>
                 <input 
-                  type="email" 
+                  type="email"
                   name="customerEmail"
                   value={shippingData.customerEmail}
-                  onChange={handleInputChange}
-                  placeholder="john@example.com" 
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    if (value === "" || /^[^\s@]+@[^\s@]*$/.test(value) || !value.includes("@")) {
+                      setShippingData((prev) => ({
+                        ...prev,
+                        customerEmail: value
+                      }));
+                    }
+                  }}
+                  placeholder="john@example.com"
+                  required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#241B6D] focus:border-transparent transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700">Phone Number *</label>
-                <input 
-                  type="tel" 
-                  name="customerPhone"
-                  value={shippingData.customerPhone}
-                  onChange={handleInputChange}
-                  placeholder="+91 98765 43210" 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#241B6D] focus:border-transparent transition-all"
-                />
+              <label className="text-sm font-bold text-gray-700">Phone Number *</label>
+              <input
+                type="tel"
+                name="customerPhone"
+                value={shippingData.customerPhone}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                  setShippingData((prev) => ({
+                    ...prev,
+                    customerPhone: value
+                  }));
+                }}
+                placeholder="9876543210"
+                maxLength={10}
+                minLength={10}
+                required
+                pattern="[0-9]{10}"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#241B6D] focus:border-transparent transition-all"
+              />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700">Pincode *</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="shippingPincode"
                   value={shippingData.shippingPincode}
-                  onChange={handleInputChange}
-                  placeholder="110001" 
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
+                    setShippingData((prev) => ({
+                      ...prev,
+                      shippingPincode: value
+                    }));
+                  }}
+                  placeholder="110001"
+                  maxLength={6}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#241B6D] focus:border-transparent transition-all"
                 />
               </div>
