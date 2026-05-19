@@ -1,5 +1,5 @@
-const DEFAULT_PORTAL_BASE_URL = "https://dashboard.bluone.ink";
-// const DEFAULT_PORTAL_BASE_URL = "http://localhost:3000";
+// const DEFAULT_PORTAL_BASE_URL = "https://dashboard.bluone.ink";
+const DEFAULT_PORTAL_BASE_URL = "https://staging-dashboard.bluone.ink";
 
 export function getPortalBaseUrl() {
   const base =
